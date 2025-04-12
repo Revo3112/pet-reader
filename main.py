@@ -4,7 +4,7 @@ import pickle
 import numpy as np
 from tensorflow.keras.preprocessing import image
 from tensorflow.keras.models import load_model
-from flask import Flask, send_file
+from flask import Flask, send_file, request, abort
 
 app = Flask(__name__)
 model = None
@@ -37,6 +37,13 @@ def get_mapping(mapping_path, index_to_breed_map):
         print(f"Error: File mapping tidak ditemukan di {mapping_path}")
     return None
 
+@app.route('/predict', methods=['POST'])
+def predict_breed():
+    # memastikan bahwa request memiliki file dengan key "Image"
+    if 'image' not in request.files:
+        abort(400, description="Tidak ada file yang dikirim.")
+    
+    file = request.files['image']
 
 def main():
     app.run(port=int(os.environ.get('PORT', 80)))
