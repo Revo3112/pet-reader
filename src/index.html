@@ -62,6 +62,21 @@
         gap: 2rem;
         margin-top: 2rem;
       }
+
+      .btn {
+        display: inline-block; /* atau block */
+        background-color: #10b981 !important;
+        color: #ffffff !important;
+        border-radius: 8px !important;
+        width: 140px !important;
+        height: 20px !important;
+        border: none !important;
+        padding-top: 5px;
+      }
+      .btn:hover {
+        cursor: pointer;
+      }
+
       @media (min-width: 768px) {
         .grid {
           grid-template-columns: 1fr 1fr;
@@ -201,11 +216,11 @@
         </p>
       </div>
       <div class="grid">
-        <div class="card">
+        <div class="card" id="uploadImageDropzone">
           <svg
             fill="none"
             stroke="currentColor"
-            viewbox="0 0 24 24"
+            viewBox="0 0 24 24"
             xmlns="http://www.w3.org/2000/svg"
           >
             <path
@@ -217,8 +232,17 @@
           </svg>
           <h3>Upload Pet Image</h3>
           <p>Drag and drop an image here or click to browse</p>
-          <button>Browse Files</button>
-        </div>
+          <!-- Menggunakan label sebagai pengganti tombol -->
+          <label for="image-upload" class="btn">Browse Files</label>
+          <input
+            type="file"
+            id="image-upload"
+            name="image_upload"
+            accept="image/*"
+            style="display:none;"
+          >
+          <div id="image_preview"></div>
+        </div>        
         <div class="card">
           <svg
             class="h-10 w-10 mx-auto text-gray-400 mb-3"
@@ -311,5 +335,62 @@
       <p>© 2025 PetCare Assistant. All rights reserved.</p>
       <p>Helping pet owners provide better care through technology.</p>
     </footer>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', function(){
+        function handleImageUpload(input, previewContainer) {
+          var file = input.files[0];
+          if (file && file.type.startsWith('image/')) {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+              // Membuat elemen img untuk preview
+              var imgPreview = document.createElement('img');
+              imgPreview.src = e.target.result;
+              imgPreview.style.maxWidth = '100%';
+              imgPreview.style.maxHeight = '500px';
+              imgPreview.style.marginTop = '20px';
+              imgPreview.style.marginBottom = '10px';
+              // Membersihkan kontainer dan menambahkan preview
+              previewContainer.innerHTML = '';
+              previewContainer.appendChild(imgPreview);
+              // Menampilkan nama file
+              previewContainer.innerHTML += `<p>File name: ${file.name}</p>`;
+            };
+            reader.readAsDataURL(file);
+          } else {
+            // Jika file yang diunggah bukan image, berikan pesan error
+            previewContainer.innerHTML = `<p>File yang diunggah bukan format gambar yang valid.</p>`;
+          }
+        }
+
+        var dropzone = document.getElementById('uploadImageDropzone')
+        var input = document.getElementById('image-upload')
+        var previewContainer = document.getElementById('image_preview')
+        
+        // Event listener untuk input file
+        input.addEventListener('change', function() {
+          handleImageUpload(input, previewContainer);
+        });
+
+        dropzone.addEventListener('dragover', function(e) {
+          e.preventDefault();
+          dropzone.classList.add('dragover');
+        });
+
+        dropzone.addEventListener('dragleave', function() {
+          dropzone.classList.remove('dragover');
+        });
+
+        dropzone.addEventListener('drop', function(e) {
+          e.preventDefault();
+          dropzone.classList.remove('dragover');
+          var files = e.dataTransfer.files;
+          if (files.length > 0) {
+            input.files = files;
+            handleImageUpload(input, previewContainer);
+          }
+        });
+      })
+    </script>
   </body>
 </html>
