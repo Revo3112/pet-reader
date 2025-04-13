@@ -34,7 +34,7 @@ def get_mapping(mapping_path):
 
 @app.route("/")
 def index():
-    return send_file('templates/src/index.html')
+    return send_file('src/index.html')
 
 @app.route('/predict', methods=['POST'])
 def predict_breed():
