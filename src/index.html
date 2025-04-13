@@ -8,6 +8,38 @@
 
   <body>
     <div= "headhead" ><h1>WELCOME TO</h1><img = ""></div>
+    <div>
+      <form id="uploadImage" method="post" enctype="multipart/form-data">
+        <input type="file" id="ImageInput" name="Image" accept="image/*" required>
+        <button type="submit">Upload Image</button>
+      </form>
+    </div>
+      <!-- Tempat menampilkan gambar yang diterima dari server -->
+    <div id="displayArea"></div>
 
+    <script>
+        document.getElementById("uploadImage").addEventListener("submit", function(event){
+          event.preventDefault();
+
+          const formData = new FormData();
+          const fileInput = document.getElementById("ImageInput");
+          formData.append("image", fileInput.files[0]);
+
+          fetch("/predict", {
+            method: "POST", 
+            body: formData
+          }).then(response => response.json())
+            .then(data => {
+              // Tampilkan data prediksi
+              document.getElementById("displayArea").innerHTML = `
+                <img src="${URL.createObjectURL(fileInput.files[0])}" alt="Gambar yang diupload" style="max-width: 300px;">
+                <h1> Hasil Prediksi !</h1>
+                <p>prediksi dari gambar: ${data.predicted_bread}</p>
+                <p>Keyakinan dari gambar: ${data.predicted_class_prob}</p>
+              `;
+            })
+          .catch(error => console.error("Error uploading image:", error));
+        });
+    </script>
   </body>
 </html>
