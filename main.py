@@ -39,10 +39,10 @@ def index():
 @app.route('/predict', methods=['POST'])
 def predict_breed():
     more_confidence = False
-    if 'image' not in request.files:
+    if 'image_upload' not in request.files:
         abort(400, description="Tidak ada file yang dikirim.")
-    
-    file = request.files['image']
+
+    file = request.files['image_upload']  # <--- Mengambil file sesuai nama 'image_upload'
     model = get_model('model/final_pet_classifier_model_v3.keras')
     index_to_breed_map = get_mapping('mapping/index_to_breed_map.pkl')
     
