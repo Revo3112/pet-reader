@@ -74,7 +74,7 @@ def predict_breed():
         if predict_breed is None:
             predict_breed = "Tidak dapat mendeteksi ras kucing atau anjing."
             more_confidence = True
-        if predicted_class_prob > 0.7:
+        if predicted_class_prob > 0.1:
             more_confidence = True
     
     return jsonify({

@@ -1,45 +1,315 @@
-<!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Pet Reader</title>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>PetCare Assistant</title>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f9fafb;
+        color: #1f2937;
+        margin: 0;
+        padding: 0;
+      }
+      header {
+        background-color: #ffffff;
+        border-bottom: 1px solid #e5e7eb;
+        padding: 1.5rem 0;
+      }
+      .container {
+        max-width: 1024px;
+        margin: 0 auto;
+        padding: 0 1rem;
+      }
+      .header-content {
+        display: flex;
+        align-items: center;
+      }
+      .header-content h1 {
+        font-size: 1.25rem;
+        font-weight: bold;
+        color: #1f2937;
+        margin-left: 0.5rem;
+      }
+      .header-content img {
+        height: 2rem;
+        width: 2rem;
+      }
+      .main-content {
+        padding: 2rem 0;
+      }
+      .main-content h2 {
+        font-size: 2rem;
+        font-weight: bold;
+        color: #111827;
+        text-align: center;
+        margin-bottom: 0.75rem;
+      }
+      .main-content p {
+        font-size: 1.125rem;
+        color: #6b7280;
+        text-align: center;
+        max-width: 40rem;
+        margin: 0 auto;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 2rem;
+        margin-top: 2rem;
+      }
+      @media (min-width: 768px) {
+        .grid {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+      .card {
+        background-color: #ffffff;
+        border: 2px dashed #d1d5db;
+        border-radius: 0.5rem;
+        padding: 2.5rem;
+        text-align: center;
+      }
+      .card h3 {
+        font-size: 1.125rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+      }
+      .card p {
+        font-size: 0.875rem;
+        color: #6b7280;
+        margin-bottom: 1rem;
+      }
+      .card button {
+        background-color: #10b981;
+        color: #ffffff;
+        padding: 0.5rem 1rem;
+        border: none;
+        border-radius: 0.375rem;
+        cursor: pointer;
+      }
+      .card button:disabled {
+        background-color: #d1d5db;
+        cursor: not-allowed;
+      }
+      .card svg {
+        height: 4rem;
+        width: 4rem;
+        color: #9ca3af;
+        margin-bottom: 1rem;
+      }
+      .button-group {
+        display: flex;
+        gap: 0.75rem;
+        margin-top: 1rem;
+        justify-content: center;
+      }
+      .button-group button {
+        padding: 0.75rem;
+        font-size: 1rem;
+        border-radius: 0.375rem;
+        cursor: pointer;
+      }
+      .button-group .primary {
+        background-color: #10b981;
+        color: #ffffff;
+        border: none;
+        flex: 4;
+      }
+      .button-group .outline {
+        background-color: #ffffff;
+        color: #1f2937;
+        border: 1px solid #d1d5db;
+        flex: 1;
+      }
+      .how-it-works {
+        margin-top: 5rem;
+        text-align: center;
+      }
+      .how-it-works h3 {
+        font-size: 1.125rem;
+        font-weight: 600;
+        margin-bottom: 0.75rem;
+      }
+      .how-it-works .grid {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 2rem;
+        max-width: 48rem;
+        margin: 0 auto;
+      }
+      @media (min-width: 768px) {
+        .how-it-works .grid {
+          flex-direction: row;
+        }
+      }
+      .how-it-works .card {
+        padding: 1.5rem;
+        border: none;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+        flex: 1;
+        max-width: 15rem;
+      }
+      .how-it-works .card svg {
+        height: 3rem;
+        width: 3rem;
+        color: #10b981;
+        background-color: #d1fae5;
+        border-radius: 9999px;
+        padding: 0.75rem;
+        margin-bottom: 1rem;
+      }
+      .how-it-works .card h4 {
+        font-size: 1rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+      }
+      .how-it-works .card p {
+        font-size: 0.875rem;
+        color: #6b7280;
+      }
+      footer {
+        border-top: 1px solid #e5e7eb;
+        padding: 2rem 0;
+        text-align: center;
+        font-size: 0.875rem;
+        color: #6b7280;
+      }
+    </style>
   </head>
-
   <body>
-    <div= "headhead" ><h1>WELCOME TO</h1><img = ""></div>
-    <div>
-      <form id="uploadImage" method="post" enctype="multipart/form-data">
-        <input type="file" id="ImageInput" name="Image" accept="image/*" required>
-        <button type="submit">Upload Image</button>
-      </form>
+    <header>
+      <div class="container">
+        <div class="header-content">
+          <img alt="PetCare Assistant Logo" src=""/>
+          <h1>PetCare Assistant</h1>
+        </div>
+      </div>
+    </header>
+    <div class="container main-content">
+      <div class="text-center">
+        <h2>Pet Identification &amp; Care Guide</h2>
+        <p>
+          Upload a photo of your pet and our AI will identify it and provide
+          personalized care recommendations to help you take better care of your
+          furry friend.
+        </p>
+      </div>
+      <div class="grid">
+        <div class="card">
+          <svg
+            fill="none"
+            stroke="currentColor"
+            viewbox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.5"
+            ></path>
+          </svg>
+          <h3>Upload Pet Image</h3>
+          <p>Drag and drop an image here or click to browse</p>
+          <button>Browse Files</button>
+        </div>
+        <div class="card">
+          <svg
+            class="h-10 w-10 mx-auto text-gray-400 mb-3"
+            fill="none"
+            stroke="currentColor"
+            viewbox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.5"
+            ></path>
+          </svg>
+          <h3>No Pet Detected Yet</h3>
+          <p>
+            Upload a photo of your pet and click "Identify Pet" to get started.
+          </p>
+        </div>
+      </div>
+      <div class="button-group">
+        <button class="primary">Identify Pet</button>
+        <button class="outline">Reset</button>
+      </div>
+      <div class="how-it-works">
+        <h3>How it works</h3>
+        <div class="grid">
+          <div class="card">
+            <svg
+              fill="none"
+              stroke="currentColor"
+              viewbox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+              ></path>
+            </svg>
+            <h4>Upload Photo</h4>
+            <p>Take a clear photo of your pet and upload it to our system.</p>
+          </div>
+          <div class="card">
+            <svg
+              fill="none"
+              stroke="currentColor"
+              viewbox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+              ></path>
+            </svg>
+            <h4>AI Detection</h4>
+            <p>
+              Our AI analyzes the image to identify the type of pet with high
+              accuracy.
+            </p>
+          </div>
+          <div class="card">
+            <svg
+              fill="none"
+              stroke="currentColor"
+              viewbox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+              ></path>
+            </svg>
+            <h4>Get Care Tips</h4>
+            <p>
+              Receive personalized care recommendations for your specific pet
+              type.
+            </p>
+          </div>
+        </div>
+      </div>
     </div>
-      <!-- Tempat menampilkan gambar yang diterima dari server -->
-    <div id="displayArea"></div>
-
-    <script>
-        document.getElementById("uploadImage").addEventListener("submit", function(event){
-          event.preventDefault();
-
-          const formData = new FormData();
-          const fileInput = document.getElementById("ImageInput");
-          formData.append("image", fileInput.files[0]);
-
-          fetch("/predict", {
-            method: "POST", 
-            body: formData
-          }).then(response => response.json())
-            .then(data => {
-              // Tampilkan data prediksi
-              document.getElementById("displayArea").innerHTML = `
-                <img src="${URL.createObjectURL(fileInput.files[0])}" alt="Gambar yang diupload" style="max-width: 300px;">
-                <h1> Hasil Prediksi !</h1>
-                <p>prediksi dari gambar: ${data.predicted_bread}</p>
-                <p>Keyakinan dari gambar: ${data.predicted_class_prob}</p>
-              `;
-            })
-          .catch(error => console.error("Error uploading image:", error));
-        });
-    </script>
+    <footer>
+      <p>© 2025 PetCare Assistant. All rights reserved.</p>
+      <p>Helping pet owners provide better care through technology.</p>
+    </footer>
   </body>
 </html>
