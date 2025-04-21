@@ -38,7 +38,7 @@ def index():
 
 @app.route('/predict', methods=['POST'])
 def predict_breed():
-    more_confidence = False
+    model = None
     if 'image_upload' not in request.files:
         abort(400, description="Tidak ada file yang dikirim.")
 
@@ -65,21 +65,47 @@ def predict_breed():
     img_array = np.expand_dims(img_array, axis=0)
     img_array /= 255.0
 
-    while(more_confidence != True):
-        predictions = model.predict(img_array, verbose=0)
-        predicted_class_idx = int(np.argmax(predictions[0]))
-        predicted_class_prob = float(predictions[0][predicted_class_idx])
-        
-        predict_breed = index_to_breed_map.get(predicted_class_idx)
-        if predict_breed is None:
-            predict_breed = "Tidak dapat mendeteksi ras kucing atau anjing."
-            more_confidence = True
-        if predicted_class_prob > 0.1:
-            more_confidence = True
+    # Menggunakan model biasa
+    predictions = model.predict(img_array, verbose=0)
+    predicted_class_idx = int(np.argmax(predictions[0]))
+    predicted_class_prob = float(predictions[0][predicted_class_idx])
+    
+    predict_breed = index_to_breed_map.get(predicted_class_idx)
+    if predict_breed is None:
+        predict_breed = "Tidak dapat mendeteksi ras kucing atau anjing."
+   
+    # Check with new model if same then return the same prediction
+    efficient_model = get_model('model/final_EfficientNetB3_model.keras')
+    index_to_breed_map_efficient = get_mapping('mapping/index_to_breed_mapefficient.pkl')
+
+    target_size = (300, 300)
+    img = image.load_img(img_bytes, target_size=target_size, interpolation='nearest')
+    img_array = image.img_to_array(img)
+    img_array = np.expand_dims(img_array, axis=0)
+
+    predictions_efficient = model.predict(img_array)
+    prediction_efficient_index = np.argmax(predictions_efficient[0])
+    confidence = float(predictions_efficient[0][prediction_efficient_index])
+
+    predicted_bread_effcient = index_to_breed_map_efficient.get(prediction_efficient_index, f"ERROR: Index {prediction_efficient_index} not in map!")
+
+    if predicted_bread_effcient == predict_breed:
+        predict_breed = predicted_bread_effcient
+        if confidence > predicted_class_prob:
+            predicted_class_prob = confidence
+            model = 'EfficientNetB3'
+        model = 'basic_model'
+    elif confidence > predicted_class_prob:
+        predict_breed = predicted_bread_effcient
+        predicted_class_prob = confidence
+        model = 'EfficientNetB3'
+    elif confidence < predicted_class_prob:
+        predict_breed = predict_breed
+        model = 'basic_model'
     
     return jsonify({
         "predicted_bread": predict_breed,
-        "predicted_class_prob": round(predicted_class_prob, 4)
+        "predicted_class_prob": round(predicted_class_prob, 4),
     })
 
 def main():
