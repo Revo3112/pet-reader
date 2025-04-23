@@ -36,18 +36,21 @@ class GroomingRecommendation(BaseModel):
     mandi: str
     sisir: str
 
+class ActivityRecommendation(BaseModel):
+    aktivitas: str
+
 class PetCare(BaseModel):
     makanan: FoodRecommendation
     kesehatan: HealthRecommendation
     grooming: GroomingRecommendation
     aktivitas: str
-    peringatan: List[str]
+    peringatan: Optional[List[str]] = []
 
 class PetCareRecommendation(BaseModel):
     ras: str
     perawatan: PetCare
-    tips_khusus: str
-    sumber: str
+    tips_khusus: Optional[str] = None
+    sumber: Optional[str] = None
 
 def get_model(model_path):
     print(f"Trying to load model from: {os.path.abspath(model_path)}")
@@ -86,82 +89,147 @@ def get_konteks_wiki(breed, sentences=5):
     except Exception as e:
         return f"Informasi spesifik untuk {breed} tidak ditemukan. {str(e)}"
 
+# Penyempurnaan pada fungsi get_care_recommendations untuk memastikan format JSON yang konsisten
 def get_care_recommendations(breed, context, max_retries=3):
-    """Get care recommendations using Groq API with schema validation"""
-    try:
-        # Create system prompt with specific instructions
-        system_prompt = f"""You are a professional pet care specialist with extensive experience in breed-specific care. 
-        Please provide detailed recommendations for {breed} based on the following information:
+    """Dapatkan rekomendasi perawatan untuk ras hewan tertentu."""
+    retry_count = 0
 
-        {context[:2000]}...
+    system_prompt = f"""You are a professional pet care specialist with extensive experience in breed-specific care.
 
-        You must output a valid JSON object that follows the provided schema exactly."""
+    Provide detailed and specific care recommendations for {breed} based on the following information:
+    {context[:2000]}...
 
-        # Get the schema from our Pydantic model
-        schema = PetCareRecommendation.model_json_schema()
-        
-        # Make API call to Groq
-        retry_count = 0
-        backoff_time = 1
-        
-        while retry_count < max_retries:
-            try:
-                chat_completion = groq.chat.completions.create(
-                    messages=[
-                        {
-                            "role": "system",
-                            "content": system_prompt
-                        },
-                        {
-                            "role": "user",
-                            "content": f"Provide care recommendations for {breed} breed"
-                        }
-                    ],
-                    model = model[retry_count],  # You can also use other models like "mixtral-8x7b-32768" or "gemma-7b-it"
-                    temperature=0.3,
-                    response_format={"type": "json_object"},
-                    stream=False
-                )
-                
-                # Extract and validate response
-                response_content = chat_completion.choices[0].message.content
-                
-                # Validate response against our schema
-                validated_data = PetCareRecommendation.model_validate_json(response_content)
-                
-                # Return the validated JSON string and model name
-                return response_content, model[retry_count]
-                
-            except Exception as e:
-                print(f"Error with Groq API, attempt {retry_count+1}: {str(e)}")
-                retry_count += 1
-                
-                if retry_count < max_retries:
-                    print(f"Retrying in {backoff_time} seconds...")
-                    time.sleep(backoff_time)
-                    backoff_time *= 2  # Exponential backoff
-                else:
-                    print(f"All retries failed for Groq API")
-                    break
-    
-    except Exception as e:
-        print(f"Unexpected error in get_care_recommendations: {str(e)}")
-    
-    # If everything fails, return a generic recommendation
+    RESPOND IN INDONESIAN LANGUAGE with valid JSON matching EXACTLY this structure:
+    {{
+      "ras": "{breed}",
+      "perawatan": {{
+        "makanan": {{
+          "jenis": "SPECIFIC food types",
+          "frekuensi": "SPECIFIC feeding frequency"
+        }},
+        "kesehatan": {{
+          "vaksin": ["SPECIFIC vaccine 1", "SPECIFIC vaccine 2"],
+          "checkup": "SPECIFIC checkup frequency"
+        }},
+        "grooming": {{
+          "mandi": "SPECIFIC bathing frequency",
+          "sisir": "SPECIFIC brushing frequency"
+        }},
+        "aktivitas": "SPECIFIC activity recommendations",
+        "peringatan": ["SPECIFIC warning 1", "SPECIFIC warning 2"]
+      }},
+      "tips_khusus": "SPECIFIC special tips",
+      "sumber": "source of information"
+    }}
+
+    DO NOT include any extra text, explanations, or markdown. ONLY valid JSON is acceptable.
+    """
+
+    while retry_count < max_retries:
+        try:
+            response = groq.chat.completions.create(
+                messages=[
+                    {"role": "system", "content": system_prompt},
+                    {"role": "user", "content": f"Berikan rekomendasi perawatan untuk {breed} dalam format JSON sesuai petunjuk."}
+                ],
+                model=model[0],
+                temperature=0,  # Lower temperature for more consistent formatting
+                stream = False,
+                max_tokens=1200,
+                response_format={"type": "json_object"},
+            )
+
+            response_text = response.choices[0].message.content
+
+            # Ambil hanya bagian JSON dalam respons
+            import re
+            import json
+
+            # Coba ekstrak JSON jika dikelilingi oleh backticks
+            json_match = re.search(r'```json\s*([\s\S]*?)\s*```', response_text)
+            if json_match:
+                response_text = json_match.group(1)
+            else:
+                # Coba cari JSON object dengan regex
+                json_match = re.search(r'({[\s\S]*})', response_text)
+                if json_match:
+                    response_text = json_match.group(1)
+
+            # Parse JSON
+            data = json.loads(response_text)
+
+            # Validasi menggunakan model Pydantic
+            validated_data = PetCareRecommendation(**data)
+
+            # Debug - tambahkan log untuk melihat data yang berhasil divalidasi
+            print(f"Validation successful: {validated_data.dict()}")
+
+            return validated_data.dict(), model[0]
+
+        except Exception as e:
+            retry_count += 1
+            print(f"Error getting recommendations (attempt {retry_count}/{max_retries}): {str(e)}")
+
+            # Jika JSON parsing yang gagal, coba perbaiki
+            if "JSONDecodeError" in str(e):
+                print(f"JSON decode error. Raw response: {response_text}")
+                # Coba "bersihkan" respons jika berisi karakter tidak valid
+                cleaned_response = re.sub(r'[^\x00-\x7F]+', '', response_text)
+                try:
+                    data = json.loads(cleaned_response)
+                    print("Berhasil parse JSON setelah dibersihkan")
+                    validated_data = PetCareRecommendation(**data)
+                    return validated_data.dict(), model[0]
+                except Exception as inner_e:
+                    print(f"Masih gagal parse JSON setelah dibersihkan: {inner_e}")
+
+            # Jika gagal validasi Pydantic, lihat errornya
+            if "ValidationError" in str(e):
+                print(f"Validation error details: {str(e)}")
+
+    # Fallback yang lebih spesifik jika semua upaya gagal
     generic_response = {
         "ras": breed,
         "perawatan": {
-            "makanan": {"jenis": "High-quality pet food appropriate for breed", "frekuensi": "Follow veterinarian recommendations"},
-            "kesehatan": {"vaksin": ["Core vaccines as recommended by vet"], "checkup": "Yearly"},
-            "grooming": {"mandi": "As needed", "sisir": "Regular brushing"},
-            "aktivitas": "Regular exercise appropriate for breed",
-            "peringatan": ["Consult with veterinarian for breed-specific concerns"]
+            "makanan": {
+                "jenis": f"Royal Canin/Purina khusus {breed} atau makanan tinggi protein dengan bahan alami",
+                "frekuensi": "2-3 kali sehari dalam porsi terkontrol sesuai berat badan"
+            },
+            "kesehatan": {
+                "vaksin": ["Rabies", "Distemper", "Parvovirus", "Adenovirus", "Leptospirosis"],
+                "checkup": "Setiap 6 bulan untuk pemeriksaan gigi dan kesehatan umum"
+            },
+            "grooming": {
+                "mandi": f"Sesuai karakter bulu {breed}, umumnya 2-4 minggu sekali",
+                "sisir": "2-3 kali seminggu untuk mencegah bulu kusut dan rontok"
+            },
+            "aktivitas": f"Minimal 30 menit aktivitas fisik setiap hari, disesuaikan dengan energi {breed}",
+            "peringatan": [
+                f"Perhatikan masalah genetik umum pada {breed}",
+                "Jaga berat badan ideal untuk mencegah masalah sendi",
+                "Perhatikan tanda-tanda alergi atau masalah kulit"
+            ]
         },
-        "tips_khusus": "Consult with a professional veterinarian for personalized advice",
-        "sumber": "Generic recommendations"
+        "tips_khusus": f"Ajak {breed} bersosialisasi sejak dini dan berikan stimulasi mental dengan mainan interaktif",
+        "sumber": "Pedoman perawatan hewan peliharaan"
     }
-    
-    return json.dumps(generic_response), "generic_fallback"
+
+    # Validasi fallback response untuk memastikan sesuai dengan model
+    try:
+        validated_fallback = PetCareRecommendation(**generic_response)
+        return validated_fallback.dict(), 'fallback model'
+    except Exception as e:
+        print(f"Even fallback validation failed: {str(e)}")
+        # Jika bahkan fallback gagal, kembalikan minimum data
+        return {
+            "ras": breed,
+            "perawatan": {
+                "makanan": {"jenis": "Konsultasikan dengan dokter hewan", "frekuensi": "Sesuai kebutuhan"},
+                "kesehatan": {"vaksin": ["Konsultasikan dengan dokter hewan"], "checkup": "Rutin"},
+                "grooming": {"mandi": "Sesuai kebutuhan", "sisir": "Rutin"},
+                "aktivitas": "Aktivitas teratur"
+            }
+        }, "minimal fallback"
 
 @app.route("/")
 def index():
@@ -174,52 +242,52 @@ def predict_breed():
         abort(400, description="Tidak ada file yang dikirim.")
 
     file = request.files['image_upload']
-    
+
     # Debug current working directory
     print(f"Current directory: {os.getcwd()}")
-    
+
     # Load the first model
     model_path = 'model/final_pet_classifier_model_v3.keras'
     mapping_path = 'mapping/index_to_breed_map.pkl'
-    
+
     model = get_model(model_path)
     index_to_breed_map = get_mapping(mapping_path)
-    
+
     if model is None:
         abort(500, description=f"Gagal memuat model dari {model_path}")
     if index_to_breed_map is None:
         abort(500, description=f"Gagal memuat mapping dari {mapping_path}")
-    
+
     # Prepare and process image for the first model
     file.seek(0)
     img_bytes = io.BytesIO(file.read())
     img_bytes.seek(0)
-    
+
     target_size = (224, 224)
     img = image.load_img(img_bytes, target_size=target_size)
     img_array = image.img_to_array(img)
     img_array = np.expand_dims(img_array, axis=0)
     img_array /= 255.0
-    
+
     # Make prediction with the first model
     predictions = model.predict(img_array, verbose=0)
     predicted_class_idx = int(np.argmax(predictions[0]))
     predicted_class_prob = float(predictions[0][predicted_class_idx])
-    
+
     predict_breed = index_to_breed_map.get(predicted_class_idx)
     if predict_breed is None:
         predict_breed = "Tidak dapat mendeteksi ras kucing atau anjing."
-    
+
     used_model = 'basic_model'
-    
+
     # Now load the efficient model and try second prediction
     try:
         efficient_model_path = 'model/final_EfficientNetB3_model.keras'
         efficient_mapping_path = 'mapping/index_to_breed_mapefficient.pkl'
-        
+
         efficient_model = get_model(efficient_model_path)
         index_to_breed_map_efficient = get_mapping(efficient_mapping_path)
-        
+
         if efficient_model is not None and index_to_breed_map_efficient is not None:
             # Process image for the efficient model
             img_bytes.seek(0)
@@ -228,15 +296,15 @@ def predict_breed():
             img_array = image.img_to_array(img)
             img_array = np.expand_dims(img_array, axis=0)
             img_array /= 255.0
-            
+
             # Make prediction with the efficient model
             predictions_efficient = efficient_model.predict(img_array, verbose=0)
             prediction_efficient_index = np.argmax(predictions_efficient[0])
             confidence = float(predictions_efficient[0][prediction_efficient_index])
-            
-            predicted_breed_efficient = index_to_breed_map_efficient.get(prediction_efficient_index, 
+
+            predicted_breed_efficient = index_to_breed_map_efficient.get(prediction_efficient_index,
                                                             f"ERROR: Index {prediction_efficient_index} not in map!")
-            
+
             # Select the best prediction
             if predicted_breed_efficient == predict_breed:
                 if confidence > predicted_class_prob:
@@ -251,10 +319,10 @@ def predict_breed():
     except Exception as e:
         print(f"Error during efficient model prediction: {e}")
         # Continue with the basic model prediction only
-    
+
     # Get Wikipedia context
-    konteks = get_konteks_wiki("purebred" + predict_breed)
-    
+    konteks = get_konteks_wiki(predict_breed)
+
     # Get care recommendations with Groq instead of Hugging Face
     care_recommendations, model_used = get_care_recommendations(predict_breed, konteks)
 

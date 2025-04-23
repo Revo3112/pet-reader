@@ -163,6 +163,170 @@
       max-width: 48rem;
       margin: 0 auto;
     }
+
+    /* Styling untuk rekomendasi perawatan */
+    .pet-care-recommendations {
+        background-color: #ffffff;
+        border-radius: 8px;
+        padding: 1rem; /* Kurangi dari 1.5rem */
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        margin-top: 0.5rem; /* Kurangi dari 1rem */
+    }
+
+    .recommendation-title {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: #10b981;
+        margin-bottom: 0.5rem; /* Kurangi dari 1rem */
+        text-align: center;
+        border-bottom: 2px solid #d1fae5;
+        padding-bottom: 0.5rem; /* Kurangi dari 0.75rem */
+    }
+
+    .special-tips {
+        background-color: #f0fdfa;
+        border-left: 4px solid #10b981;
+        padding: 0.5rem; /* Kurangi dari 0.75rem */
+        margin-bottom: 0.75rem; /* Kurangi dari 1.5rem */
+        font-style: italic;
+        color: #065f46;
+    }
+
+    .recommendation-section {
+        margin-bottom: 0.75rem; /* Kurangi dari 1.5rem */
+        background-color: #f9fafb;
+        border-radius: 6px;
+        padding: 0.75rem; /* Kurangi dari 1rem */
+    }
+
+    .section-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #111827;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+    }
+
+    .section-title i {
+      margin-right: 0.5rem;
+      color: #10b981;
+    }
+
+    .recommendation-item {
+      padding: 0.5rem 0;
+      line-height: 1.5;
+    }
+
+    .recommendation-list {
+      list-style-type: none;
+      padding-left: 0.5rem;
+      margin-top: 0.5rem;
+    }
+
+    .recommendation-list li {
+        margin-bottom: 0.25rem; /* Kurangi dari 0.5rem */
+        display: flex;
+        align-items: center;
+    }
+
+    .recommendation-list li i {
+      margin-right: 0.5rem;
+      color: #10b981;
+      min-width: 16px;
+    }
+
+    .warning-section {
+      background-color: #fff3f3;
+      border-left: 4px solid #ef4444;
+    }
+
+    .warning-section .section-title i {
+      color: #ef4444;
+    }
+
+    .warning-list li {
+      color: #7f1d1d;
+    }
+
+    .recommendation-source {
+      font-size: 0.8rem;
+      color: #6b7280;
+      text-align: right;
+      margin-top: 1rem;
+      font-style: italic;
+    }
+
+    .download-section {
+        margin-top: 0.75rem; /* Kurangi dari 1.5rem */
+        text-align: center;
+    }
+
+    .download-btn {
+      background-color: #1e40af;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      padding: 0.75rem 1.25rem;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.2s;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .download-btn:hover {
+      background-color: #1e3a8a;
+    }
+
+    .download-btn i {
+      margin-right: 0.5rem;
+    }
+
+    /* PDF Preview styling */
+    .pdf-preview {
+      border: 1px solid #e5e7eb;
+      padding: 1rem;
+      margin-top: 1rem;
+      background-color: white;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .pdf-header {
+      text-align: center;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid #e5e7eb;
+      margin-bottom: 1rem;
+    }
+
+    .pdf-header h1 {
+      font-size: 1.5rem;
+      color: #10b981;
+      margin-bottom: 0.5rem;
+    }
+
+    .pdf-header p {
+      color: #6b7280;
+      font-size: 0.9rem;
+    }
+
+    .pdf-section {
+      margin-bottom: 1rem;
+    }
+
+    .pdf-section-title {
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      color: #111827;
+    }
+
+    .pdf-loading {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 2rem;
+    }
     @media (min-width: 768px) {
       .how-it-works .grid {
         flex-direction: row;
@@ -200,7 +364,7 @@
       font-size: 0.875rem;
       color: #6b7280;
     }
-    
+
     /* Chat-like interface styles */
     .chat-container {
       max-height: 500px;
@@ -208,56 +372,81 @@
       padding: 1rem;
       text-align: left;
     }
-    
+
     .chat-message {
       margin-bottom: 1rem;
       display: flex;
       flex-direction: column;
     }
-    
+
     .user-message {
       align-items: flex-start;
     }
-    
+
     .assistant-message {
       align-items: flex-end;
     }
-    
+
     .message-bubble {
       padding: 0.75rem 1rem;
       border-radius: 1rem;
       max-width: 80%;
       box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
     }
-    
+
     .user-bubble {
       background-color: #f3f4f6;
       border-top-left-radius: 0;
     }
-    
+
     .assistant-bubble {
       background-color: #10b981;
       color: white;
       border-bottom-right-radius: 0;
     }
-    
+
+    .assistant-bubble .pet-care-recommendations {
+        color: #333; /* Warna gelap untuk teks di dalam kotak rekomendasi */
+        background-color: #ffffff;
+        border-radius: 8px;
+        padding: 1rem;
+    }
+    .assistant-bubble .recommendation-title {
+        color: #10b981; /* Warna hijau untuk judul rekomendasi */
+    }
+
+    .assistant-bubble .section-title {
+    color: #111827; /* Warna gelap untuk judul bagian */
+    }
+
+    .assistant-bubble .recommendation-item,
+    .assistant-bubble p {
+        color: #333; /* Warna gelap untuk teks */
+    }
+
+    /* Pastikan tombol download memiliki kontras yang baik */
+    .assistant-bubble .download-btn {
+        background-color: #1e40af;
+        color: white;
+    }
+
     .message-time {
       font-size: 0.7rem;
       color: #9ca3af;
       margin-top: 0.25rem;
     }
-    
+
     .loading {
       display: flex;
       justify-content: center;
       align-items: center;
       padding: 1rem;
     }
-    
+
     .loading-dots {
       display: flex;
     }
-    
+
     .loading-dots span {
       width: 8px;
       height: 8px;
@@ -266,43 +455,43 @@
       border-radius: 50%;
       animation: bounce 1.4s infinite ease-in-out both;
     }
-    
+
     .loading-dots span:nth-child(1) {
       animation-delay: -0.32s;
     }
-    
+
     .loading-dots span:nth-child(2) {
       animation-delay: -0.16s;
     }
-    
+
     @keyframes bounce {
-      0%, 80%, 100% { 
+      0%, 80%, 100% {
         transform: scale(0);
-      } 40% { 
+      } 40% {
         transform: scale(1.0);
       }
     }
-    
+
     .section-title {
       font-weight: 600;
       margin-top: 0.5rem;
       margin-bottom: 0.25rem;
     }
-    
+
     .recommendation-item {
       margin-bottom: 0.5rem;
     }
-    
+
     .pet-info-section {
       margin-bottom: 1rem;
     }
-    
+
     .pet-info-header {
       display: flex;
       justify-content: space-between;
       margin-bottom: 0.5rem;
     }
-    
+
     .confidence-badge {
       background-color: #d1fae5;
       color: #047857;
@@ -310,21 +499,21 @@
       padding: 0.25rem 0.5rem;
       border-radius: 999px;
     }
-    
+
     .recommendation-source-badge {
       font-size: 0.75rem;
       color: #6b7280;
       margin-top: 0.25rem;
       display: block;
     }
-    
+
     /* Pre-loader animation */
     @keyframes pulse {
       0% { opacity: 0.6; }
       50% { opacity: 1; }
       100% { opacity: 0.6; }
     }
-    
+
     .pulse {
       animation: pulse 1.5s infinite;
     }
@@ -334,7 +523,7 @@
     <header>
       <div class="container">
         <div class="header-content">
-          <img alt="PetCare Assistant Logo" src="/api/placeholder/32/32" /> <!-- Replaced with placeholder -->
+          <img alt="PetCare Assistant Logo" src="src/img/LOGO.png" /> <!-- Replaced with placeholder -->
           <h1>PetCare Assistant</h1>
         </div>
       </div>
@@ -378,7 +567,7 @@
               style="display:none;"
             >
           </form>
-        </div>        
+        </div>
         <div class="card" id="result-card">
           <div id="initial-content">
             <svg
@@ -489,11 +678,12 @@
           const initialContent = document.getElementById('initial-content');
           const chatContainer = document.getElementById('chat-container');
           const uploadForm = document.getElementById('uploadform');
-          
+          let lastPetData = null;
+
           // Constants
           const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
           const VALID_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/gif', 'image/webp', 'image/bmp'];
-          
+
           /**
            * Validates the uploaded image file
            * @param {File} file - The file object to validate
@@ -504,20 +694,20 @@
             if (!file) {
               return 'Tidak ada file yang dipilih.';
             }
-            
+
             // Check file type
             if (!VALID_IMAGE_TYPES.includes(file.type)) {
               return 'File harus berupa gambar (JPG, PNG, GIF, dll).';
             }
-            
+
             // Check file size
             if (file.size > MAX_FILE_SIZE) {
               return 'Ukuran file terlalu besar. Maksimum 5MB.';
             }
-            
+
             return null; // No error
           }
-          
+
           /**
            * Handles image upload and preview
            * @param {HTMLInputElement} input - The file input element
@@ -525,10 +715,10 @@
           function handleImageUpload(input) {
             const file = input.files[0];
             const validationError = validateImage(file);
-            
+
             // Clear previous content
             previewContainer.innerHTML = '';
-            
+
             if (validationError) {
               // Display error message
               const errorMessage = document.createElement('p');
@@ -536,13 +726,13 @@
               errorMessage.style.color = '#ef4444';
               errorMessage.textContent = validationError;
               previewContainer.appendChild(errorMessage);
-              
+
               // Show icon and disable identify button
               iconImage.style.display = 'block';
               identifyButton.disabled = true;
               return;
             }
-            
+
             // Create and display image preview
             const reader = new FileReader();
             reader.onload = function(e) {
@@ -554,23 +744,23 @@
               imgPreview.style.marginTop = '20px';
               imgPreview.style.marginBottom = '10px';
               imgPreview.alt = `Preview of ${file.name}`;
-              
+
               // Add preview to container
               previewContainer.appendChild(imgPreview);
-              
+
               // Show file name
               const fileNameDisplay = document.createElement('p');
               fileNameDisplay.textContent = `File name: ${file.name}`;
               previewContainer.appendChild(fileNameDisplay);
-              
+
               // Hide icon and enable identify button
               iconImage.style.display = 'none';
               identifyButton.disabled = false;
-              
+
               // Show a toast notification
               showToast('Gambar berhasil diunggah!', 'success');
             };
-            
+
             reader.onerror = function() {
               // Handle file reading errors
               const errorMessage = document.createElement('p');
@@ -578,14 +768,296 @@
               errorMessage.style.color = '#ef4444';
               errorMessage.textContent = 'Error membaca file. Coba unggah ulang.';
               previewContainer.appendChild(errorMessage);
-              
+
               iconImage.style.display = 'block';
               identifyButton.disabled = true;
             };
-            
+
             reader.readAsDataURL(file);
           }
-          
+
+          /**
+           * Generate PDF document from pet care recommendations
+           * @param {Object} petData - Pet identification and care data
+           */
+          // Ubah fungsi generatePetCarePDF
+            function generatePetCarePDF(petData) {
+            showToast('Mempersiapkan PDF...', 'info');
+
+            // Cek apakah library sudah dimuat
+            if (window.jspdf && window.html2canvas) {
+                createPDF(petData);
+                return;
+            }
+
+            // Tambahkan jsPDF library
+            const script = document.createElement('script');
+            script.src = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js';
+            document.head.appendChild(script);
+
+            // Tambahkan html2canvas library
+            const script2 = document.createElement('script');
+            script2.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';
+            document.head.appendChild(script2);
+
+            // Pastikan kedua library sudah dimuat sebelum membuat PDF
+            let librariesLoaded = 0;
+
+            function checkLibraries() {
+                librariesLoaded++;
+                if (librariesLoaded === 2 && window.jspdf && window.html2canvas) {
+                createPDF(petData);
+                }
+            }
+
+            script.onload = checkLibraries;
+            script2.onload = checkLibraries;
+
+            // Timeout jika library gagal dimuat
+            setTimeout(() => {
+                if (librariesLoaded < 2) {
+                showToast('Gagal memuat library PDF. Coba lagi.', 'error');
+                }
+            }, 5000);
+            }
+
+          /**
+           * Create and download the PDF document
+           * @param {Object} petData - Pet identification and care data
+           */
+          function createPDF(petData) {
+            // Show loading indicator
+            showToast('Menyiapkan dokumen PDF...', 'info');
+
+            try {
+
+            // Pastikan jsPDF sudah dimuat
+                if (!window.jspdf) {
+                    showToast('Library PDF belum dimuat. Coba lagi.', 'error');
+                    return;
+                }
+              // Create PDF instance
+              const { jsPDF } = window.jspdf;
+              const doc = new jsPDF({
+                orientation: 'portrait',
+                unit: 'mm',
+                format: 'a4',
+              });
+
+              // Parse data if necessary
+              let careData;
+              if (typeof petData.care_recommendations === 'string') {
+                careData = JSON.parse(petData.care_recommendations);
+              } else {
+                careData = petData.care_recommendations;
+              }
+
+              // Add header
+              doc.setFillColor(16, 185, 129); // #10b981
+              doc.rect(0, 0, 210, 30, 'F');
+              doc.setTextColor(255, 255, 255);
+              doc.setFontSize(24);
+              doc.text('PetCare Assistant', 105, 15, { align: 'center' });
+              doc.setFontSize(12);
+              doc.text('Laporan Perawatan Hewan Peliharaan', 105, 22, { align: 'center' });
+
+              // Reset text color to black
+              doc.setTextColor(0, 0, 0);
+
+              // Pet identification section
+              doc.setFontSize(18);
+              doc.text('Identifikasi Hewan', 20, 40);
+
+              doc.setFontSize(12);
+              doc.setDrawColor(16, 185, 129); // #10b981
+              doc.line(20, 45, 190, 45);
+
+              doc.setFontSize(14);
+              doc.text(`Ras: ${petData.predicted_breed}`, 20, 55);
+              doc.setFontSize(10);
+              doc.text(`Tingkat Keyakinan: ${petData.confidence}%`, 20, 62);
+              doc.text(`Model yang digunakan: ${petData.model_used}`, 20, 69);
+
+              // Pet information section
+              doc.setFontSize(12);
+              doc.text('Informasi:', 20, 80);
+
+              // Format the breed info to fit within page width
+              const maxWidth = 170;
+              const splitBreedInfo = doc.splitTextToSize(petData.breed_info, maxWidth);
+              doc.text(splitBreedInfo, 20, 87);
+
+              // Calculate next Y position after text
+              let yPos = 87 + (splitBreedInfo.length * 7);
+
+              // Care recommendations section
+              doc.setFontSize(18);
+              doc.text('Rekomendasi Perawatan', 20, yPos + 10);
+
+              doc.setFontSize(12);
+              doc.setDrawColor(16, 185, 129);
+              doc.line(20, yPos + 15, 190, yPos + 15);
+
+              yPos += 25;
+
+              // Add care recommendations
+              if (careData && careData.perawatan) {
+                // Food section
+                if (careData.perawatan.makanan) {
+                  doc.setFontSize(14);
+                  doc.text('Makanan', 20, yPos);
+                  yPos += 7;
+
+                  doc.setFontSize(10);
+                  doc.text(`Jenis: ${careData.perawatan.makanan.jenis}`, 25, yPos);
+                  yPos += 7;
+
+                  doc.text(`Frekuensi: ${careData.perawatan.makanan.frekuensi}`, 25, yPos);
+                  yPos += 15;
+                }
+
+                // Health section
+                if (careData.perawatan.kesehatan) {
+                  // Check if we need a new page
+                  if (yPos > 250) {
+                    doc.addPage();
+                    yPos = 20;
+                  }
+
+                  doc.setFontSize(14);
+                  doc.text('Kesehatan', 20, yPos);
+                  yPos += 7;
+
+                  if (careData.perawatan.kesehatan.vaksin && careData.perawatan.kesehatan.vaksin.length > 0) {
+                    doc.setFontSize(10);
+                    doc.text('Vaksin yang direkomendasikan:', 25, yPos);
+                    yPos += 7;
+
+                    careData.perawatan.kesehatan.vaksin.forEach(vaksin => {
+                      doc.text(`• ${vaksin}`, 30, yPos);
+                      yPos += 7;
+                    });
+                  }
+
+                  if (careData.perawatan.kesehatan.checkup) {
+                    doc.setFontSize(10);
+                    doc.text(`Checkup: ${careData.perawatan.kesehatan.checkup}`, 25, yPos);
+                    yPos += 15;
+                  }
+                }
+
+                // Grooming section
+                if (careData.perawatan.grooming) {
+                  // Check if we need a new page
+                  if (yPos > 250) {
+                    doc.addPage();
+                    yPos = 20;
+                  }
+
+                  doc.setFontSize(14);
+                  doc.text('Grooming', 20, yPos);
+                  yPos += 7;
+
+                  doc.setFontSize(10);
+                  doc.text(`Mandi: ${careData.perawatan.grooming.mandi}`, 25, yPos);
+                  yPos += 7;
+
+                  doc.text(`Sisir: ${careData.perawatan.grooming.sisir}`, 25, yPos);
+                  yPos += 15;
+                }
+
+                // Activity section
+                if (careData.perawatan.aktivitas) {
+                  // Check if we need a new page
+                  if (yPos > 250) {
+                    doc.addPage();
+                    yPos = 20;
+                  }
+
+                  doc.setFontSize(14);
+                  doc.text('Aktivitas', 20, yPos);
+                  yPos += 7;
+
+                  doc.setFontSize(10);
+                  const splitActivity = doc.splitTextToSize(careData.perawatan.aktivitas, maxWidth - 5);
+                  doc.text(splitActivity, 25, yPos);
+                  yPos += (splitActivity.length * 7) + 8;
+                }
+
+                // Warning section
+                if (careData.perawatan.peringatan && careData.perawatan.peringatan.length > 0) {
+                  // Check if we need a new page
+                  if (yPos > 250) {
+                    doc.addPage();
+                    yPos = 20;
+                  }
+
+                  doc.setFontSize(14);
+                  doc.setTextColor(239, 68, 68); // #ef4444 - Red color for warnings
+                  doc.text('Peringatan Kesehatan', 20, yPos);
+                  yPos += 7;
+
+                  doc.setFontSize(10);
+                  careData.perawatan.peringatan.forEach(warning => {
+                    const splitWarning = doc.splitTextToSize(`• ${warning}`, maxWidth - 5);
+                    doc.text(splitWarning, 25, yPos);
+                    yPos += (splitWarning.length * 7) + 3;
+                  });
+
+                  // Reset text color to black
+                  doc.setTextColor(0, 0, 0);
+                  yPos += 8;
+                }
+
+                // Tips section
+                if (careData.tips_khusus) {
+                  // Check if we need a new page
+                  if (yPos > 240) {
+                    doc.addPage();
+                    yPos = 20;
+                  }
+
+                  doc.setFontSize(14);
+                  doc.text('Tips Khusus', 20, yPos);
+                  yPos += 7;
+
+                  doc.setFontSize(10);
+                  const splitTips = doc.splitTextToSize(careData.tips_khusus, maxWidth - 5);
+                  doc.text(splitTips, 25, yPos);
+                  yPos += (splitTips.length * 7) + 15;
+                }
+              }
+
+              // Add footer with source
+              doc.setFontSize(8);
+              doc.text(`Sumber: ${careData.sumber || petData.recommendations_source || 'PetCare Assistant'}`, 20, 285);
+              doc.text(`Dibuat pada: ${new Date().toLocaleDateString()} ${new Date().toLocaleTimeString()}`, 150, 285);
+
+              // Save PDF
+              doc.save(`PetCare_${petData.predicted_breed.replace(/\s+/g, '_')}.pdf`);
+
+              showToast('PDF berhasil dibuat dan diunduh!', 'success');
+            } catch (err) {
+              console.error('Error creating PDF:', err);
+              showToast('Gagal membuat PDF: ' + err.message, 'error');
+            }
+          }
+
+          /**
+           * Set up event listener for PDF download button
+           * @param {Object} petData - Pet identification and care data
+           */
+           function setupPDFDownload(petData) {
+            const downloadButton = document.getElementById('download-pdf');
+            if (downloadButton) {
+                downloadButton.addEventListener('click', function() {
+                console.log("Download button clicked");
+                // Gunakan data yang disimpan jika tersedia
+                generatePetCarePDF(petData || lastPetData);
+                });
+            }
+            }
+
           /**
            * Shows a toast notification
            * @param {string} message - The message to display
@@ -604,7 +1076,7 @@
             toast.style.zIndex = '9999';
             toast.style.opacity = '0';
             toast.style.transition = 'opacity 0.3s ease-in';
-            
+
             // Set background color based on type
             if (type === 'success') {
               toast.style.backgroundColor = '#10b981';
@@ -613,18 +1085,18 @@
             } else {
               toast.style.backgroundColor = '#3b82f6';
             }
-            
+
             // Set message
             toast.textContent = message;
-            
+
             // Add to body
             document.body.appendChild(toast);
-            
+
             // Show toast
             setTimeout(() => {
               toast.style.opacity = '1';
             }, 10);
-            
+
             // Hide toast after 3 seconds
             setTimeout(() => {
               toast.style.opacity = '0';
@@ -633,7 +1105,7 @@
               }, 300);
             }, 3000);
           }
-          
+
           /**
            * Format timestamp for chat messages
            * @returns {string} Formatted time (HH:MM)
@@ -644,7 +1116,7 @@
             const minutes = now.getMinutes().toString().padStart(2, '0');
             return `${hours}:${minutes}`;
           }
-          
+
           /**
            * Add a message to the chat interface
            * @param {string} content - HTML content of the message
@@ -654,22 +1126,22 @@
             const messageDiv = document.createElement('div');
             messageDiv.className = `chat-message ${isAssistant ? 'assistant-message' : 'user-message'}`;
             messageDiv.setAttribute('role', 'listitem');
-            
+
             const bubbleDiv = document.createElement('div');
             bubbleDiv.className = `message-bubble ${isAssistant ? 'assistant-bubble' : 'user-bubble'}`;
             bubbleDiv.innerHTML = content;
-            
+
             const timeSpan = document.createElement('span');
             timeSpan.className = 'message-time';
             timeSpan.textContent = formatTimestamp();
-            
+
             messageDiv.appendChild(bubbleDiv);
             messageDiv.appendChild(timeSpan);
-            
+
             chatContainer.appendChild(messageDiv);
             chatContainer.scrollTop = chatContainer.scrollHeight;
           }
-          
+
           /**
            * Show loading indicator in chat
            */
@@ -678,20 +1150,20 @@
             loadingDiv.className = 'loading';
             loadingDiv.id = 'loading-indicator';
             loadingDiv.setAttribute('aria-label', 'Loading');
-            
+
             const dotsDiv = document.createElement('div');
             dotsDiv.className = 'loading-dots';
-            
+
             for (let i = 0; i < 3; i++) {
               const dot = document.createElement('span');
               dotsDiv.appendChild(dot);
             }
-            
+
             loadingDiv.appendChild(dotsDiv);
             chatContainer.appendChild(loadingDiv);
             chatContainer.scrollTop = chatContainer.scrollHeight;
           }
-          
+
           /**
            * Hide loading indicator
            */
@@ -701,7 +1173,7 @@
               loadingIndicator.remove();
             }
           }
-          
+
           /**
            * Format care recommendations
            * @param {object|string} recommendations - The recommendations data
@@ -710,128 +1182,157 @@
           function formatCareRecommendations(recommendations) {
             try {
               // Try to parse JSON if it's a string
-              const careData = typeof recommendations === 'string' ? 
+              const careData = typeof recommendations === 'string' ?
                 JSON.parse(recommendations) : recommendations;
-              
+
               // New format from backend
               if (careData.perawatan) {
                 let html = '<div class="pet-care-recommendations">';
-                
+
+                // Add pet breed and any special tips at the top
+                if (careData.ras) {
+                  html += `<div class="recommendation-title">Rekomendasi Perawatan untuk ${careData.ras}</div>`;
+                }
+
+                if (careData.tips_khusus) {
+                  html += `<div class="special-tips">${careData.tips_khusus}</div>`;
+                }
+
                 // Format food information
                 if (careData.perawatan.makanan) {
-                  html += '<div class="section-title">Makanan:</div>';
+                  html += '<div class="recommendation-section">';
+                  html += '<div class="section-title"><i class="fas fa-drumstick-bite"></i> Makanan</div>';
                   html += `<div class="recommendation-item">
                             <strong>Jenis:</strong> ${careData.perawatan.makanan.jenis}<br>
                             <strong>Frekuensi:</strong> ${careData.perawatan.makanan.frekuensi}
                           </div>`;
-                }
-                
-                // Format health information
-                if (careData.perawatan.kesehatan) {
-                  html += '<div class="section-title">Kesehatan:</div>';
-                  html += '<div class="recommendation-item">';
-                  
-                  if (careData.perawatan.kesehatan.vaksin && careData.perawatan.kesehatan.vaksin.length > 0) {
-                    html += '<strong>Vaksin yang direkomendasikan:</strong><ul>';
-                    careData.perawatan.kesehatan.vaksin.forEach(vaksin => {
-                      html += `<li>${vaksin}</li>`;
-                    });
-                    html += '</ul>';
-                  }
-                  
-                  if (careData.perawatan.kesehatan.checkup) {
-                    html += `<strong>Checkup:</strong> ${careData.perawatan.kesehatan.checkup}`;
-                  }
-                  
                   html += '</div>';
                 }
-                
-                // Format grooming information
+
+                // Format health information with icons
+                if (careData.perawatan.kesehatan) {
+                  html += '<div class="recommendation-section">';
+                  html += '<div class="section-title"><i class="fas fa-heartbeat"></i> Kesehatan</div>';
+
+                  if (careData.perawatan.kesehatan.vaksin && careData.perawatan.kesehatan.vaksin.length > 0) {
+                    html += '<div class="recommendation-item">';
+                    html += '<strong>Vaksin yang direkomendasikan:</strong>';
+                    html += '<ul class="recommendation-list">';
+                    careData.perawatan.kesehatan.vaksin.forEach(vaksin => {
+                      html += `<li><i class="fas fa-syringe"></i> ${vaksin}</li>`;
+                    });
+                    html += '</ul>';
+                    html += '</div>';
+                  }
+
+                  if (careData.perawatan.kesehatan.checkup) {
+                    html += `<div class="recommendation-item">
+                              <strong>Checkup:</strong> ${careData.perawatan.kesehatan.checkup}
+                            </div>`;
+                  }
+
+                  html += '</div>';
+                }
+
+                 // Format grooming information
                 if (careData.perawatan.grooming) {
-                  html += '<div class="section-title">Grooming:</div>';
+                  html += '<div class="recommendation-section">';
+                  html += '<div class="section-title"><i class="fas fa-bath"></i> Grooming</div>';
                   html += `<div class="recommendation-item">
                             <strong>Mandi:</strong> ${careData.perawatan.grooming.mandi}<br>
                             <strong>Sisir:</strong> ${careData.perawatan.grooming.sisir}
                           </div>`;
+                  html += '</div>';
                 }
-                
+
                 // Format activity information
                 if (careData.perawatan.aktivitas) {
-                  html += '<div class="section-title">Aktivitas:</div>';
+                  html += '<div class="recommendation-section">';
+                  html += '<div class="section-title"><i class="fas fa-running"></i> Aktivitas</div>';
                   html += `<div class="recommendation-item">${careData.perawatan.aktivitas}</div>`;
+                  html += '</div>';
                 }
-                
-                // Format warnings
+
+                // Format warnings with attention icon
                 if (careData.perawatan.peringatan && careData.perawatan.peringatan.length > 0) {
-                  html += '<div class="section-title">Peringatan Kesehatan:</div>';
-                  html += '<div class="recommendation-item"><ul>';
+                  html += '<div class="recommendation-section warning-section">';
+                  html += '<div class="section-title"><i class="fas fa-exclamation-triangle"></i> Peringatan Kesehatan</div>';
+                  html += '<ul class="recommendation-list warning-list">';
                   careData.perawatan.peringatan.forEach(warning => {
                     html += `<li>${warning}</li>`;
                   });
-                  html += '</ul></div>';
+                  html += '</ul>';
+                  html += '</div>';
                 }
-                
+
                 // Add source information if available
                 if (careData.sumber) {
                   html += `<div class="recommendation-source">Sumber: ${careData.sumber}</div>`;
                 }
-                
+
+                // Add download button
+                html += `<div class="download-section">
+                          <button id="download-pdf" class="download-btn">
+                            <i class="fas fa-file-pdf"></i> Unduh PDF
+                          </button>
+                        </div>`;
+
                 html += '</div>';
                 return html;
-              } 
+              }
               // Handle old format for backward compatibility
               else {
                 let html = '<div class="pet-care-recommendations">';
-                
+
                 // Format each section from old format
                 if (careData.jadwalMakan || careData["Jadwal makan"]) {
                   const mealSchedule = careData.jadwalMakan || careData["Jadwal makan"];
                   html += `<div class="section-title">Jadwal Makan:</div>
                           <div class="recommendation-item">${mealSchedule}</div>`;
                 }
-                
+
                 if (careData.jenismakanan || careData["Jenis makanan yang direkomendasikan"]) {
                   const foodType = careData.jenismakanan || careData["Jenis makanan yang direkomendasikan"];
                   html += `<div class="section-title">Jenis Makanan:</div>
                           <div class="recommendation-item">${foodType}</div>`;
                 }
-                
+
                 if (careData.kebutuhanOlahraga || careData["Kebutuhan olahraga/aktivitas"]) {
                   const exercise = careData.kebutuhanOlahraga || careData["Kebutuhan olahraga/aktivitas"];
                   html += `<div class="section-title">Kebutuhan Olahraga:</div>
                           <div class="recommendation-item">${exercise}</div>`;
                 }
-                
+
                 if (careData.perawatanKesehatan || careData["Perawatan kesehatan rutin"]) {
                   const healthcare = careData.perawatanKesehatan || careData["Perawatan kesehatan rutin"];
-                  html += `<div class="section-title">Perawatan Kesehatan:</div> 
+                  html += `<div class="section-title">Perawatan Kesehatan:</div>
                           <div class="recommendation-item">${healthcare}</div>`;
                 }
-                
+
                 if (careData.perawatanKebersihan || careData["Perawatan kebersihan"]) {
                   const hygiene = careData.perawatanKebersihan || careData["Perawatan kebersihan"];
                   html += `<div class="section-title">Perawatan Kebersihan:</div>
                           <div class="recommendation-item">${hygiene}</div>`;
                 }
-                
+
                 if (careData.kebutuhanLingkungan || careData["Kebutuhan lingkungan"]) {
                   const environment = careData.kebutuhanLingkungan || careData["Kebutuhan lingkungan"];
                   html += `<div class="section-title">Kebutuhan Lingkungan:</div>
                           <div class="recommendation-item">${environment}</div>`;
                 }
-                
+
                 if (careData.sosialDanPelatihan || careData["Sosial dan pelatihan"]) {
                   const socialTraining = careData.sosialDanPelatihan || careData["Sosial dan pelatihan"];
                   html += `<div class="section-title">Sosial dan Pelatihan:</div>
                           <div class="recommendation-item">${socialTraining}</div>`;
                 }
-                
+
                 if (careData.tandaKesehatanBuruk || careData["Tanda-tanda masalah kesehatan"]) {
                   const healthIssues = careData.tandaKesehatanBuruk || careData["Tanda-tanda masalah kesehatan"];
                   html += `<div class="section-title">Tanda Masalah Kesehatan:</div>
                           <div class="recommendation-item">${healthIssues}</div>`;
                 }
-                
+
                 html += '</div>';
                 return html;
               }
@@ -840,67 +1341,67 @@
               // If parsing fails, just return the text or error message
               if (typeof recommendations === 'string' && recommendations.startsWith('Error')) {
                 return `<div class="error-message">
-                          <p>${recommendations}</p>
-                          <p>Silakan coba lagi nanti.</p>
-                        </div>`;
+                        <p>Error saat memformat rekomendasi: ${e.message}</p>
+                        <p>Silakan coba lagi nanti.</p>
+                      </div>`;
               } else {
                 return `<p>${recommendations}</p>`;
               }
             }
           }
-          
+
           /**
            * Reset the application state
            */
           function resetApp() {
             // Reset form
             uploadForm.reset();
-            
+
             // Reset preview
             previewContainer.innerHTML = '';
             iconImage.style.display = 'block';
-            
+
             // Reset chat
             initialContent.style.display = 'block';
             chatContainer.style.display = 'none';
             chatContainer.innerHTML = '';
-            
+
             // Reset button
             identifyButton.disabled = true;
-            
+
             // Show confirmation toast
             showToast('Aplikasi telah direset', 'info');
           }
-          
+
           /**
            * Process the pet identification
            * @param {Event} e - The event object
            */
           function processPetIdentification(e) {
             e.preventDefault();
-            
+
             // Show chat interface
             initialContent.style.display = 'none';
             chatContainer.style.display = 'block';
             chatContainer.innerHTML = '';
             chatContainer.setAttribute('role', 'list');
             chatContainer.setAttribute('aria-label', 'Chat messages');
-            
+
             // Add user message with the uploaded image
             let imgSrc = '';
             if (previewContainer.querySelector('img')) {
               imgSrc = previewContainer.querySelector('img').src;
             }
-            
+
             const userMessageContent = `
               <p>Tolong identifikasi hewan peliharaan ini:</p>
               <img src="${imgSrc}" style="max-width: 100%; max-height: 200px; margin-top: 10px; border-radius: 8px;" alt="Gambar hewan peliharaan">`;
             addMessage(userMessageContent);
             showLoading();
-            
+
             // Send to server
             const formData = new FormData(uploadForm);
-            
+
             fetch('/predict', {
               method: "POST",
               body: formData
@@ -913,7 +1414,8 @@
             })
             .then(data => {
               hideLoading();
-              
+                // Simpan data untuk digunakan oleh PDF generator
+                lastPetData = data;
               // Format the first response with basic identification
               const identificationContent = `
                 <div class="pet-info-section">
@@ -929,45 +1431,46 @@
                   <p>${data.breed_info}</p>
                 </div>
               `;
-              
+
               addMessage(identificationContent, true);
-              
+
               // After a short delay, show care recommendations
               setTimeout(() => {
                 const careContent = `
                   <div class="pet-care-header">
                     <strong>Rekomendasi Perawatan untuk ${data.predicted_breed}:</strong>
-                    ${data.recommendations_source ? 
+                    ${data.recommendations_source ?
                       `<span class="recommendation-source-badge">Sumber: ${data.recommendations_source}</span>` : ''}
                   </div>
                   ${formatCareRecommendations(data.care_recommendations)}
                 `;
-                
+
                 addMessage(careContent, true);
-                
+
+                // Tunggu sebentar agar DOM diperbarui
+                setTimeout(() => {
+                // Pasang event listener untuk tombol download
+                setupPDFDownload(data);
+                }, 200);
+
                 // Add options for more interaction
                 setTimeout(() => {
-                  const followupContent = `
-                    <p>Apakah Anda membutuhkan informasi lebih lanjut tentang ${data.predicted_breed}?</p>
-                    <div style="display: flex; gap: 10px; margin-top: 10px;">
-                      <button class="chat-option-btn" style="background-color: #10b981; color: white; border: none; padding: 8px 12px; border-radius: 4px; cursor: pointer;" 
-                        onclick="alert('Fitur ini akan segera tersedia!')">Masalah Kesehatan Umum</button>
-                      <button class="chat-option-btn" style="background-color: #10b981; color: white; border: none; padding: 8px 12px; border-radius: 4px; cursor: pointer;"
-                        onclick="alert('Fitur ini akan segera tersedia!')">Tips Pelatihan</button>
-                    </div>
-                  `;
-                  
-                  addMessage(followupContent, true);
-                }, 1500);
+                    const followupContent = `
+                        <p>Anda telah mendapatkan informasi dasar tentang ${data.predicted_breed}. Untuk mendapatkan panduan perawatan yang lebih terperinci, silakan konsultasikan dengan dokter hewan terdekat.</p>
+                        <p>Untuk menyimpan informasi ini, gunakan tombol "Unduh PDF" di atas.</p>
+                    `;
+
+                    addMessage(followupContent, true);
+                    }, 1500);
               }, 1000);
             })
             .catch(error => {
               hideLoading();
               console.error("Error:", error);
-              
+
               // Provide more specific error messages
               let errorMessage = 'Terjadi kesalahan saat menghubungi server.';
-              
+
               if (error.message.includes('Failed to fetch') || error.message.includes('NetworkError')) {
                 errorMessage = 'Gagal terhubung ke server. Periksa koneksi internet Anda.';
               } else if (error.message.includes('timeout')) {
@@ -977,38 +1480,38 @@
               } else if (error.message.includes('500')) {
                 errorMessage = 'Terjadi kesalahan pada server. Silakan coba lagi nanti.';
               }
-              
+
               addMessage(`
                 <p>Maaf, ${errorMessage}</p>
                 <p>Detail error: ${error.message}</p>
                 <button class="retry-btn" style="background-color: #3b82f6; color: white; border: none; padding: 8px 12px; border-radius: 4px; margin-top: 10px; cursor: pointer;"
                   onclick="document.getElementById('identify-button').click()">Coba Lagi</button>
               `, true);
-              
+
               showToast('Terjadi kesalahan', 'error');
             });
           }
-          
+
           // Initialize accessibility attributes
           function initAccessibility() {
             uploadImageDropzone.setAttribute('role', 'button');
             uploadImageDropzone.setAttribute('tabindex', '0');
             uploadImageDropzone.setAttribute('aria-label', 'Drop area untuk unggah gambar');
-            
+
             identifyButton.setAttribute('aria-label', 'Identifikasi Hewan Peliharaan');
             resetButton.setAttribute('aria-label', 'Reset Aplikasi');
-            
+
             chatContainer.setAttribute('role', 'log');
             chatContainer.setAttribute('aria-live', 'polite');
           }
-          
+
           // Add event listeners
           function initEventListeners() {
             // File input change event
             imageUpload.addEventListener('change', function() {
               handleImageUpload(this);
             });
-            
+
             // Click on dropzone should trigger file input
             uploadImageDropzone.addEventListener('click', function(e) {
               // Don't trigger when clicking on the preview image or label
@@ -1016,7 +1519,7 @@
                 imageUpload.click();
               }
             });
-            
+
             // Make the entire dropzone clickable for keyboard users
             uploadImageDropzone.addEventListener('keydown', function(e) {
               if (e.key === 'Enter' || e.key === ' ') {
@@ -1024,34 +1527,34 @@
                 imageUpload.click();
               }
             });
-            
+
             // Drag and drop events
             uploadImageDropzone.addEventListener('dragover', function(e) {
               e.preventDefault();
               this.style.borderColor = '#10b981';
               this.style.backgroundColor = '#f0fdfa';
             });
-            
+
             uploadImageDropzone.addEventListener('dragleave', function() {
               this.style.borderColor = '#d1d5db';
               this.style.backgroundColor = '#ffffff';
             });
-            
+
             uploadImageDropzone.addEventListener('drop', function(e) {
               e.preventDefault();
               this.style.borderColor = '#d1d5db';
               this.style.backgroundColor = '#ffffff';
-              
+
               const files = e.dataTransfer.files;
               if (files.length > 0) {
                 imageUpload.files = files;
                 handleImageUpload(imageUpload);
               }
             });
-            
+
             // Identify button click
             identifyButton.addEventListener('click', processPetIdentification);
-            
+
             // Reset button click with confirmation
             resetButton.addEventListener('click', function() {
               if (previewContainer.innerHTML !== '') {
@@ -1062,7 +1565,7 @@
                 resetApp();
               }
             });
-            
+
             // Form submission
             uploadForm.addEventListener('submit', function(e) {
               e.preventDefault();
@@ -1071,11 +1574,11 @@
               }
             });
           }
-          
+
           // Initialize everything
           initAccessibility();
           initEventListeners();
-          
+
           // Expose necessary functions to window for button onclick handlers in HTML
           window.showToast = showToast;
         });
