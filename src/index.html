@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
@@ -64,7 +65,7 @@
     }
 
     .btn {
-      display: inline-block; /* atau block */
+      display: inline-block;
       background-color: #10b981 !important;
       color: #ffffff !important;
       border-radius: 8px !important;
@@ -73,9 +74,12 @@
       border: none !important;
       padding-top: 5px;
       padding-bottom: 2px;
+      text-align: center;
+      text-decoration: none;
+      cursor: pointer;
     }
     .btn:hover {
-      cursor: pointer;
+      opacity: 0.9;
     }
 
     @media (min-width: 768px) {
@@ -196,13 +200,141 @@
       font-size: 0.875rem;
       color: #6b7280;
     }
+    
+    /* Chat-like interface styles */
+    .chat-container {
+      max-height: 500px;
+      overflow-y: auto;
+      padding: 1rem;
+      text-align: left;
+    }
+    
+    .chat-message {
+      margin-bottom: 1rem;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .user-message {
+      align-items: flex-start;
+    }
+    
+    .assistant-message {
+      align-items: flex-end;
+    }
+    
+    .message-bubble {
+      padding: 0.75rem 1rem;
+      border-radius: 1rem;
+      max-width: 80%;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    }
+    
+    .user-bubble {
+      background-color: #f3f4f6;
+      border-top-left-radius: 0;
+    }
+    
+    .assistant-bubble {
+      background-color: #10b981;
+      color: white;
+      border-bottom-right-radius: 0;
+    }
+    
+    .message-time {
+      font-size: 0.7rem;
+      color: #9ca3af;
+      margin-top: 0.25rem;
+    }
+    
+    .loading {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 1rem;
+    }
+    
+    .loading-dots {
+      display: flex;
+    }
+    
+    .loading-dots span {
+      width: 8px;
+      height: 8px;
+      margin: 0 4px;
+      background-color: #10b981;
+      border-radius: 50%;
+      animation: bounce 1.4s infinite ease-in-out both;
+    }
+    
+    .loading-dots span:nth-child(1) {
+      animation-delay: -0.32s;
+    }
+    
+    .loading-dots span:nth-child(2) {
+      animation-delay: -0.16s;
+    }
+    
+    @keyframes bounce {
+      0%, 80%, 100% { 
+        transform: scale(0);
+      } 40% { 
+        transform: scale(1.0);
+      }
+    }
+    
+    .section-title {
+      font-weight: 600;
+      margin-top: 0.5rem;
+      margin-bottom: 0.25rem;
+    }
+    
+    .recommendation-item {
+      margin-bottom: 0.5rem;
+    }
+    
+    .pet-info-section {
+      margin-bottom: 1rem;
+    }
+    
+    .pet-info-header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.5rem;
+    }
+    
+    .confidence-badge {
+      background-color: #d1fae5;
+      color: #047857;
+      font-size: 0.75rem;
+      padding: 0.25rem 0.5rem;
+      border-radius: 999px;
+    }
+    
+    .recommendation-source-badge {
+      font-size: 0.75rem;
+      color: #6b7280;
+      margin-top: 0.25rem;
+      display: block;
+    }
+    
+    /* Pre-loader animation */
+    @keyframes pulse {
+      0% { opacity: 0.6; }
+      50% { opacity: 1; }
+      100% { opacity: 0.6; }
+    }
+    
+    .pulse {
+      animation: pulse 1.5s infinite;
+    }
     </style>
   </head>
   <body>
     <header>
       <div class="container">
         <div class="header-content">
-          <img alt="PetCare Assistant Logo" src="src/img/logo.png"/>
+          <img alt="PetCare Assistant Logo" src="/api/placeholder/32/32" /> <!-- Replaced with placeholder -->
           <h1>PetCare Assistant</h1>
         </div>
       </div>
@@ -236,7 +368,6 @@
               </svg>
               <h3>Upload Pet Image</h3>
               <p>Drag and drop an image here or click to browse</p>
-              <!-- Menggunakan label sebagai pengganti tombol -->
             </div>
             <label for="image-upload" class="btn" id="button-submit">Browse Files</label>
             <input
@@ -248,31 +379,34 @@
             >
           </form>
         </div>        
-        <div class="card">
-          <svg
-            class="h-10 w-10 mx-auto text-gray-400 mb-3"
-            fill="none"
-            stroke="currentColor"
-            viewbox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="1.5"
-            ></path>
-          </svg>
-          <h3>No Pet Detected Yet</h3>
-          <p>
-            Upload a photo of your pet and click "Identify Pet" to get started.
-          </p>
-          <div id="result"></div>
+        <div class="card" id="result-card">
+          <div id="initial-content">
+            <svg
+              fill="none"
+              stroke="currentColor"
+              viewbox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="1.5"
+              ></path>
+            </svg>
+            <h3>No Pet Detected Yet</h3>
+            <p>
+              Upload a photo of your pet and click "Identify Pet" to get started.
+            </p>
+          </div>
+          <div id="chat-container" class="chat-container" style="display: none;">
+            <!-- Chat messages will appear here -->
+          </div>
         </div>
       </div>
       <div class="button-group">
-        <button class="primary" id="identify-button" type="submit">Identify Pet</button>
-        <button class="outline">Reset</button>
+        <button class="primary" id="identify-button" type="submit" disabled>Identify Pet</button>
+        <button class="outline" id="reset-button">Reset</button>
       </div>
       <div class="how-it-works">
         <h3>How it works</h3>
@@ -343,98 +477,608 @@
     </footer>
 
     <script>
-      document.addEventListener('DOMContentLoaded', function(){
-        function handleImageUpload(input, previewContainer, iconImage, buttonSubmit) {
-          var file = input.files[0];
-          if (file && file.type.startsWith('image/')) {
-            var reader = new FileReader();
+      document.addEventListener('DOMContentLoaded', function() {
+          // DOM Elements
+          const uploadImageDropzone = document.getElementById('uploadImageDropzone');
+          const imageUpload = document.getElementById('image-upload');
+          const previewContainer = document.getElementById('image_preview');
+          const iconImage = document.getElementById('icon-image');
+          const buttonSubmit = document.getElementById('button-submit');
+          const identifyButton = document.getElementById('identify-button');
+          const resetButton = document.getElementById('reset-button');
+          const initialContent = document.getElementById('initial-content');
+          const chatContainer = document.getElementById('chat-container');
+          const uploadForm = document.getElementById('uploadform');
+          
+          // Constants
+          const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
+          const VALID_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/gif', 'image/webp', 'image/bmp'];
+          
+          /**
+           * Validates the uploaded image file
+           * @param {File} file - The file object to validate
+           * @returns {string|null} Error message or null if valid
+           */
+          function validateImage(file) {
+            // Check if file exists
+            if (!file) {
+              return 'Tidak ada file yang dipilih.';
+            }
+            
+            // Check file type
+            if (!VALID_IMAGE_TYPES.includes(file.type)) {
+              return 'File harus berupa gambar (JPG, PNG, GIF, dll).';
+            }
+            
+            // Check file size
+            if (file.size > MAX_FILE_SIZE) {
+              return 'Ukuran file terlalu besar. Maksimum 5MB.';
+            }
+            
+            return null; // No error
+          }
+          
+          /**
+           * Handles image upload and preview
+           * @param {HTMLInputElement} input - The file input element
+           */
+          function handleImageUpload(input) {
+            const file = input.files[0];
+            const validationError = validateImage(file);
+            
+            // Clear previous content
+            previewContainer.innerHTML = '';
+            
+            if (validationError) {
+              // Display error message
+              const errorMessage = document.createElement('p');
+              errorMessage.className = 'error';
+              errorMessage.style.color = '#ef4444';
+              errorMessage.textContent = validationError;
+              previewContainer.appendChild(errorMessage);
+              
+              // Show icon and disable identify button
+              iconImage.style.display = 'block';
+              identifyButton.disabled = true;
+              return;
+            }
+            
+            // Create and display image preview
+            const reader = new FileReader();
             reader.onload = function(e) {
-              // Membuat elemen img untuk preview
-              var imgPreview = document.createElement('img');
+              // Create img element for preview
+              const imgPreview = document.createElement('img');
               imgPreview.src = e.target.result;
               imgPreview.style.maxWidth = '100%';
-              imgPreview.style.maxHeight = '500px';
+              imgPreview.style.maxHeight = '300px';
               imgPreview.style.marginTop = '20px';
               imgPreview.style.marginBottom = '10px';
-              // Membersihkan kontainer dan menambahkan preview
-              previewContainer.innerHTML = '';
+              imgPreview.alt = `Preview of ${file.name}`;
+              
+              // Add preview to container
               previewContainer.appendChild(imgPreview);
-              // Menampilkan nama file
-              previewContainer.innerHTML += `<p>File name: ${file.name}</p>`;
+              
+              // Show file name
+              const fileNameDisplay = document.createElement('p');
+              fileNameDisplay.textContent = `File name: ${file.name}`;
+              previewContainer.appendChild(fileNameDisplay);
+              
+              // Hide icon and enable identify button
               iconImage.style.display = 'none';
-              buttonSubmit.display = 'none';
+              identifyButton.disabled = false;
+              
+              // Show a toast notification
+              showToast('Gambar berhasil diunggah!', 'success');
             };
+            
+            reader.onerror = function() {
+              // Handle file reading errors
+              const errorMessage = document.createElement('p');
+              errorMessage.className = 'error';
+              errorMessage.style.color = '#ef4444';
+              errorMessage.textContent = 'Error membaca file. Coba unggah ulang.';
+              previewContainer.appendChild(errorMessage);
+              
+              iconImage.style.display = 'block';
+              identifyButton.disabled = true;
+            };
+            
             reader.readAsDataURL(file);
-          } else {
-            // Jika file yang diunggah bukan image, berikan pesan error
-            previewContainer.innerHTML = `<p>File yang diunggah bukan format gambar yang valid.</p>`;
           }
-        }
-
-        var dropzone = document.getElementById('uploadImageDropzone')
-        var input = document.getElementById('image-upload')
-        var previewContainer = document.getElementById('image_preview')
-        var iconImage = document.getElementById('icon-image')
-        var button = document.getElementById('button-submit')
-        
-        // Event listener untuk input file
-        input.addEventListener('change', function() {
-          handleImageUpload(input, previewContainer, iconImage, button);
-        });
-
-        dropzone.addEventListener('dragover', function(e) {
-          e.preventDefault();
-          dropzone.classList.add('dragover');
-        });
-
-        dropzone.addEventListener('dragleave', function() {
-          dropzone.classList.remove('dragover');
-        });
-
-        dropzone.addEventListener('drop', function(e) {
-          e.preventDefault();
-          dropzone.classList.remove('dragover');
-          var files = e.dataTransfer.files;
-          if (files.length > 0) {
-            input.files = files;
-            handleImageUpload(input, previewContainer, iconImage, button);
+          
+          /**
+           * Shows a toast notification
+           * @param {string} message - The message to display
+           * @param {string} type - The type of toast (success, error, info)
+           */
+          function showToast(message, type = 'info') {
+            // Create toast element
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.style.position = 'fixed';
+            toast.style.bottom = '20px';
+            toast.style.right = '20px';
+            toast.style.padding = '10px 20px';
+            toast.style.borderRadius = '4px';
+            toast.style.color = '#fff';
+            toast.style.zIndex = '9999';
+            toast.style.opacity = '0';
+            toast.style.transition = 'opacity 0.3s ease-in';
+            
+            // Set background color based on type
+            if (type === 'success') {
+              toast.style.backgroundColor = '#10b981';
+            } else if (type === 'error') {
+              toast.style.backgroundColor = '#ef4444';
+            } else {
+              toast.style.backgroundColor = '#3b82f6';
+            }
+            
+            // Set message
+            toast.textContent = message;
+            
+            // Add to body
+            document.body.appendChild(toast);
+            
+            // Show toast
+            setTimeout(() => {
+              toast.style.opacity = '1';
+            }, 10);
+            
+            // Hide toast after 3 seconds
+            setTimeout(() => {
+              toast.style.opacity = '0';
+              setTimeout(() => {
+                document.body.removeChild(toast);
+              }, 300);
+            }, 3000);
           }
+          
+          /**
+           * Format timestamp for chat messages
+           * @returns {string} Formatted time (HH:MM)
+           */
+          function formatTimestamp() {
+            const now = new Date();
+            const hours = now.getHours().toString().padStart(2, '0');
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            return `${hours}:${minutes}`;
+          }
+          
+          /**
+           * Add a message to the chat interface
+           * @param {string} content - HTML content of the message
+           * @param {boolean} isAssistant - Whether the message is from the assistant
+           */
+          function addMessage(content, isAssistant = false) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `chat-message ${isAssistant ? 'assistant-message' : 'user-message'}`;
+            messageDiv.setAttribute('role', 'listitem');
+            
+            const bubbleDiv = document.createElement('div');
+            bubbleDiv.className = `message-bubble ${isAssistant ? 'assistant-bubble' : 'user-bubble'}`;
+            bubbleDiv.innerHTML = content;
+            
+            const timeSpan = document.createElement('span');
+            timeSpan.className = 'message-time';
+            timeSpan.textContent = formatTimestamp();
+            
+            messageDiv.appendChild(bubbleDiv);
+            messageDiv.appendChild(timeSpan);
+            
+            chatContainer.appendChild(messageDiv);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+          }
+          
+          /**
+           * Show loading indicator in chat
+           */
+          function showLoading() {
+            const loadingDiv = document.createElement('div');
+            loadingDiv.className = 'loading';
+            loadingDiv.id = 'loading-indicator';
+            loadingDiv.setAttribute('aria-label', 'Loading');
+            
+            const dotsDiv = document.createElement('div');
+            dotsDiv.className = 'loading-dots';
+            
+            for (let i = 0; i < 3; i++) {
+              const dot = document.createElement('span');
+              dotsDiv.appendChild(dot);
+            }
+            
+            loadingDiv.appendChild(dotsDiv);
+            chatContainer.appendChild(loadingDiv);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+          }
+          
+          /**
+           * Hide loading indicator
+           */
+          function hideLoading() {
+            const loadingIndicator = document.getElementById('loading-indicator');
+            if (loadingIndicator) {
+              loadingIndicator.remove();
+            }
+          }
+          
+          /**
+           * Format care recommendations
+           * @param {object|string} recommendations - The recommendations data
+           * @returns {string} Formatted HTML content
+           */
+          function formatCareRecommendations(recommendations) {
+            try {
+              // Try to parse JSON if it's a string
+              const careData = typeof recommendations === 'string' ? 
+                JSON.parse(recommendations) : recommendations;
+              
+              // New format from backend
+              if (careData.perawatan) {
+                let html = '<div class="pet-care-recommendations">';
+                
+                // Format food information
+                if (careData.perawatan.makanan) {
+                  html += '<div class="section-title">Makanan:</div>';
+                  html += `<div class="recommendation-item">
+                            <strong>Jenis:</strong> ${careData.perawatan.makanan.jenis}<br>
+                            <strong>Frekuensi:</strong> ${careData.perawatan.makanan.frekuensi}
+                          </div>`;
+                }
+                
+                // Format health information
+                if (careData.perawatan.kesehatan) {
+                  html += '<div class="section-title">Kesehatan:</div>';
+                  html += '<div class="recommendation-item">';
+                  
+                  if (careData.perawatan.kesehatan.vaksin && careData.perawatan.kesehatan.vaksin.length > 0) {
+                    html += '<strong>Vaksin yang direkomendasikan:</strong><ul>';
+                    careData.perawatan.kesehatan.vaksin.forEach(vaksin => {
+                      html += `<li>${vaksin}</li>`;
+                    });
+                    html += '</ul>';
+                  }
+                  
+                  if (careData.perawatan.kesehatan.checkup) {
+                    html += `<strong>Checkup:</strong> ${careData.perawatan.kesehatan.checkup}`;
+                  }
+                  
+                  html += '</div>';
+                }
+                
+                // Format grooming information
+                if (careData.perawatan.grooming) {
+                  html += '<div class="section-title">Grooming:</div>';
+                  html += `<div class="recommendation-item">
+                            <strong>Mandi:</strong> ${careData.perawatan.grooming.mandi}<br>
+                            <strong>Sisir:</strong> ${careData.perawatan.grooming.sisir}
+                          </div>`;
+                }
+                
+                // Format activity information
+                if (careData.perawatan.aktivitas) {
+                  html += '<div class="section-title">Aktivitas:</div>';
+                  html += `<div class="recommendation-item">${careData.perawatan.aktivitas}</div>`;
+                }
+                
+                // Format warnings
+                if (careData.perawatan.peringatan && careData.perawatan.peringatan.length > 0) {
+                  html += '<div class="section-title">Peringatan Kesehatan:</div>';
+                  html += '<div class="recommendation-item"><ul>';
+                  careData.perawatan.peringatan.forEach(warning => {
+                    html += `<li>${warning}</li>`;
+                  });
+                  html += '</ul></div>';
+                }
+                
+                // Add source information if available
+                if (careData.sumber) {
+                  html += `<div class="recommendation-source">Sumber: ${careData.sumber}</div>`;
+                }
+                
+                html += '</div>';
+                return html;
+              } 
+              // Handle old format for backward compatibility
+              else {
+                let html = '<div class="pet-care-recommendations">';
+                
+                // Format each section from old format
+                if (careData.jadwalMakan || careData["Jadwal makan"]) {
+                  const mealSchedule = careData.jadwalMakan || careData["Jadwal makan"];
+                  html += `<div class="section-title">Jadwal Makan:</div>
+                          <div class="recommendation-item">${mealSchedule}</div>`;
+                }
+                
+                if (careData.jenismakanan || careData["Jenis makanan yang direkomendasikan"]) {
+                  const foodType = careData.jenismakanan || careData["Jenis makanan yang direkomendasikan"];
+                  html += `<div class="section-title">Jenis Makanan:</div>
+                          <div class="recommendation-item">${foodType}</div>`;
+                }
+                
+                if (careData.kebutuhanOlahraga || careData["Kebutuhan olahraga/aktivitas"]) {
+                  const exercise = careData.kebutuhanOlahraga || careData["Kebutuhan olahraga/aktivitas"];
+                  html += `<div class="section-title">Kebutuhan Olahraga:</div>
+                          <div class="recommendation-item">${exercise}</div>`;
+                }
+                
+                if (careData.perawatanKesehatan || careData["Perawatan kesehatan rutin"]) {
+                  const healthcare = careData.perawatanKesehatan || careData["Perawatan kesehatan rutin"];
+                  html += `<div class="section-title">Perawatan Kesehatan:</div> 
+                          <div class="recommendation-item">${healthcare}</div>`;
+                }
+                
+                if (careData.perawatanKebersihan || careData["Perawatan kebersihan"]) {
+                  const hygiene = careData.perawatanKebersihan || careData["Perawatan kebersihan"];
+                  html += `<div class="section-title">Perawatan Kebersihan:</div>
+                          <div class="recommendation-item">${hygiene}</div>`;
+                }
+                
+                if (careData.kebutuhanLingkungan || careData["Kebutuhan lingkungan"]) {
+                  const environment = careData.kebutuhanLingkungan || careData["Kebutuhan lingkungan"];
+                  html += `<div class="section-title">Kebutuhan Lingkungan:</div>
+                          <div class="recommendation-item">${environment}</div>`;
+                }
+                
+                if (careData.sosialDanPelatihan || careData["Sosial dan pelatihan"]) {
+                  const socialTraining = careData.sosialDanPelatihan || careData["Sosial dan pelatihan"];
+                  html += `<div class="section-title">Sosial dan Pelatihan:</div>
+                          <div class="recommendation-item">${socialTraining}</div>`;
+                }
+                
+                if (careData.tandaKesehatanBuruk || careData["Tanda-tanda masalah kesehatan"]) {
+                  const healthIssues = careData.tandaKesehatanBuruk || careData["Tanda-tanda masalah kesehatan"];
+                  html += `<div class="section-title">Tanda Masalah Kesehatan:</div>
+                          <div class="recommendation-item">${healthIssues}</div>`;
+                }
+                
+                html += '</div>';
+                return html;
+              }
+            } catch (e) {
+              console.error("Error formatting recommendations:", e);
+              // If parsing fails, just return the text or error message
+              if (typeof recommendations === 'string' && recommendations.startsWith('Error')) {
+                return `<div class="error-message">
+                          <p>${recommendations}</p>
+                          <p>Silakan coba lagi nanti.</p>
+                        </div>`;
+              } else {
+                return `<p>${recommendations}</p>`;
+              }
+            }
+          }
+          
+          /**
+           * Reset the application state
+           */
+          function resetApp() {
+            // Reset form
+            uploadForm.reset();
+            
+            // Reset preview
+            previewContainer.innerHTML = '';
+            iconImage.style.display = 'block';
+            
+            // Reset chat
+            initialContent.style.display = 'block';
+            chatContainer.style.display = 'none';
+            chatContainer.innerHTML = '';
+            
+            // Reset button
+            identifyButton.disabled = true;
+            
+            // Show confirmation toast
+            showToast('Aplikasi telah direset', 'info');
+          }
+          
+          /**
+           * Process the pet identification
+           * @param {Event} e - The event object
+           */
+          function processPetIdentification(e) {
+            e.preventDefault();
+            
+            // Show chat interface
+            initialContent.style.display = 'none';
+            chatContainer.style.display = 'block';
+            chatContainer.innerHTML = '';
+            chatContainer.setAttribute('role', 'list');
+            chatContainer.setAttribute('aria-label', 'Chat messages');
+            
+            // Add user message with the uploaded image
+            let imgSrc = '';
+            if (previewContainer.querySelector('img')) {
+              imgSrc = previewContainer.querySelector('img').src;
+            }
+            
+            const userMessageContent = `
+              <p>Tolong identifikasi hewan peliharaan ini:</p>
+              <img src="${imgSrc}" style="max-width: 100%; max-height: 200px; margin-top: 10px; border-radius: 8px;" alt="Gambar hewan peliharaan">`;
+            addMessage(userMessageContent);
+            showLoading();
+            
+            // Send to server
+            const formData = new FormData(uploadForm);
+            
+            fetch('/predict', {
+              method: "POST",
+              body: formData
+            })
+            .then(response => {
+              if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+              }
+              return response.json();
+            })
+            .then(data => {
+              hideLoading();
+              
+              // Format the first response with basic identification
+              const identificationContent = `
+                <div class="pet-info-section">
+                  <div class="pet-info-header">
+                    <strong>Identifikasi Hewan:</strong>
+                    <span class="confidence-badge">${data.confidence}% Keyakinan</span>
+                  </div>
+                  <p>Hewan peliharaan Anda adalah <strong>${data.predicted_breed}</strong></p>
+                  <p><em>Terdeteksi menggunakan model ${data.model_used}</em></p>
+                </div>
+                <div class="pet-info-section">
+                  <strong>Informasi:</strong>
+                  <p>${data.breed_info}</p>
+                </div>
+              `;
+              
+              addMessage(identificationContent, true);
+              
+              // After a short delay, show care recommendations
+              setTimeout(() => {
+                const careContent = `
+                  <div class="pet-care-header">
+                    <strong>Rekomendasi Perawatan untuk ${data.predicted_breed}:</strong>
+                    ${data.recommendations_source ? 
+                      `<span class="recommendation-source-badge">Sumber: ${data.recommendations_source}</span>` : ''}
+                  </div>
+                  ${formatCareRecommendations(data.care_recommendations)}
+                `;
+                
+                addMessage(careContent, true);
+                
+                // Add options for more interaction
+                setTimeout(() => {
+                  const followupContent = `
+                    <p>Apakah Anda membutuhkan informasi lebih lanjut tentang ${data.predicted_breed}?</p>
+                    <div style="display: flex; gap: 10px; margin-top: 10px;">
+                      <button class="chat-option-btn" style="background-color: #10b981; color: white; border: none; padding: 8px 12px; border-radius: 4px; cursor: pointer;" 
+                        onclick="alert('Fitur ini akan segera tersedia!')">Masalah Kesehatan Umum</button>
+                      <button class="chat-option-btn" style="background-color: #10b981; color: white; border: none; padding: 8px 12px; border-radius: 4px; cursor: pointer;"
+                        onclick="alert('Fitur ini akan segera tersedia!')">Tips Pelatihan</button>
+                    </div>
+                  `;
+                  
+                  addMessage(followupContent, true);
+                }, 1500);
+              }, 1000);
+            })
+            .catch(error => {
+              hideLoading();
+              console.error("Error:", error);
+              
+              // Provide more specific error messages
+              let errorMessage = 'Terjadi kesalahan saat menghubungi server.';
+              
+              if (error.message.includes('Failed to fetch') || error.message.includes('NetworkError')) {
+                errorMessage = 'Gagal terhubung ke server. Periksa koneksi internet Anda.';
+              } else if (error.message.includes('timeout')) {
+                errorMessage = 'Server terlalu lama merespons. Silakan coba lagi.';
+              } else if (error.message.includes('404')) {
+                errorMessage = 'Endpoint API tidak ditemukan. Silakan hubungi administrator.';
+              } else if (error.message.includes('500')) {
+                errorMessage = 'Terjadi kesalahan pada server. Silakan coba lagi nanti.';
+              }
+              
+              addMessage(`
+                <p>Maaf, ${errorMessage}</p>
+                <p>Detail error: ${error.message}</p>
+                <button class="retry-btn" style="background-color: #3b82f6; color: white; border: none; padding: 8px 12px; border-radius: 4px; margin-top: 10px; cursor: pointer;"
+                  onclick="document.getElementById('identify-button').click()">Coba Lagi</button>
+              `, true);
+              
+              showToast('Terjadi kesalahan', 'error');
+            });
+          }
+          
+          // Initialize accessibility attributes
+          function initAccessibility() {
+            uploadImageDropzone.setAttribute('role', 'button');
+            uploadImageDropzone.setAttribute('tabindex', '0');
+            uploadImageDropzone.setAttribute('aria-label', 'Drop area untuk unggah gambar');
+            
+            identifyButton.setAttribute('aria-label', 'Identifikasi Hewan Peliharaan');
+            resetButton.setAttribute('aria-label', 'Reset Aplikasi');
+            
+            chatContainer.setAttribute('role', 'log');
+            chatContainer.setAttribute('aria-live', 'polite');
+          }
+          
+          // Add event listeners
+          function initEventListeners() {
+            // File input change event
+            imageUpload.addEventListener('change', function() {
+              handleImageUpload(this);
+            });
+            
+            // Click on dropzone should trigger file input
+            uploadImageDropzone.addEventListener('click', function(e) {
+              // Don't trigger when clicking on the preview image or label
+              if (e.target !== imageUpload && e.target !== buttonSubmit) {
+                imageUpload.click();
+              }
+            });
+            
+            // Make the entire dropzone clickable for keyboard users
+            uploadImageDropzone.addEventListener('keydown', function(e) {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                imageUpload.click();
+              }
+            });
+            
+            // Drag and drop events
+            uploadImageDropzone.addEventListener('dragover', function(e) {
+              e.preventDefault();
+              this.style.borderColor = '#10b981';
+              this.style.backgroundColor = '#f0fdfa';
+            });
+            
+            uploadImageDropzone.addEventListener('dragleave', function() {
+              this.style.borderColor = '#d1d5db';
+              this.style.backgroundColor = '#ffffff';
+            });
+            
+            uploadImageDropzone.addEventListener('drop', function(e) {
+              e.preventDefault();
+              this.style.borderColor = '#d1d5db';
+              this.style.backgroundColor = '#ffffff';
+              
+              const files = e.dataTransfer.files;
+              if (files.length > 0) {
+                imageUpload.files = files;
+                handleImageUpload(imageUpload);
+              }
+            });
+            
+            // Identify button click
+            identifyButton.addEventListener('click', processPetIdentification);
+            
+            // Reset button click with confirmation
+            resetButton.addEventListener('click', function() {
+              if (previewContainer.innerHTML !== '') {
+                if (confirm('Apakah Anda yakin ingin mereset? Ini akan menghapus analisis hewan peliharaan saat ini.')) {
+                  resetApp();
+                }
+              } else {
+                resetApp();
+              }
+            });
+            
+            // Form submission
+            uploadForm.addEventListener('submit', function(e) {
+              e.preventDefault();
+              if (!identifyButton.disabled) {
+                identifyButton.click();
+              }
+            });
+          }
+          
+          // Initialize everything
+          initAccessibility();
+          initEventListeners();
+          
+          // Expose necessary functions to window for button onclick handlers in HTML
+          window.showToast = showToast;
         });
-      })
-
-      // Melakukan upload gambar ke backend
-      document.getElementById('identify-button').addEventListener('click', function(e){
-        e.preventDefault();
-        
-        const formData = new FormData(document.getElementById('uploadform'));
-
-        fetch('/predict', {
-          method: "POST",
-          body: formData
-        })
-        .then(response => response.json())
-        .then(data => {
-          document.getElementById("result").innerHTML = `
-            <p>Prediksi Breed: ${data.predicted_bread}</p>
-            <p>Keyakinan: ${data.predicted_class_prob.toFixed(4)}</p>
-          `;
-        })
-        .catch(error => console.error("Error:", error));        
-      })
-
-      const hoverArea =  document.getElementById('uploadImageDropzone');
-      const hiddenButton =  document.getElementById('button-submit');
-
-      hoverArea.addEventListener("mouseenter", function (){
-        hiddenButton.style.display = "inline-block";
-      })
-
-      hoverArea.addEventListener("mouseleave", function(){
-        var input = document.getElementById('image-upload')
-        if (input.files[0] != null){
-          hiddenButton.style.display = "none";
-        }
-      })
-    </script>
+        </script>
   </body>
 </html>
