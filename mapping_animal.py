@@ -33,8 +33,12 @@ pet_mapping = {
     "staffordshire": "Dog",
     "wheaten": "Dog",
     "yorkshire": "Dog",
-    "pit_bull": "Dog",  # Tambahkan ini khusus untuk pit bull terrier
-    "terrier": "Dog"    # Tambahkan ini sebagai fallback untuk semua terrier
+    "pit_bull": "Dog",  # Untuk pit bull terrier
+    "terrier": "Dog",   # Fallback untuk semua terrier
+    "coon": "Cat",      # Untuk Maine Coon
+    "shorthair": "Cat", # Untuk British Shorthair
+    "blue": "Cat",      # Untuk Russian Blue
+    "doll": "Cat"       # Untuk Ragdoll (tambahan)
 }
 
 def get_mapping(breed):
@@ -50,12 +54,21 @@ def get_mapping(breed):
     if "purebred" in breed_lower:
         breed_lower = breed_lower.replace("purebred", "").strip()
     
+    # Ganti underscore dengan spasi
+    breed_lower = breed_lower.replace("_", " ")
+    
     # Coba cari kata kunci dari nama breed dalam dictionary
     for key in pet_mapping:
         # Cek apakah key merupakan bagian dari nama breed
         if key.lower() in breed_lower:
             return pet_mapping[key]
     
-    # Jika tidak ada yang cocok, kembalikan default (anggap anjing)
+    # Jika tidak ada yang cocok, coba analisis nama
+    if any(cat_term in breed_lower for cat_term in ["cat", "kitty", "kitten", "feline"]):
+        return "Cat"
+    if any(dog_term in breed_lower for dog_term in ["dog", "puppy", "canine", "hound"]):
+        return "Dog"
+    
+    # Default fallback
     print(f"Warning: Mapping not found for breed: {breed}, defaulting to Dog")
     return "Dog"

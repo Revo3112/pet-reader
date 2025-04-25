@@ -81,13 +81,88 @@ def get_mapping(mapping_path):
 
 def get_konteks_wiki(breed, sentences=5):
     try:
-        # Tambahkan 'cat' atau 'dog' berdasarkan ras yang dikenal
-        hewan = MA.get_mapping(breed)
-        return wikipedia.summary(f"{breed} {hewan}", sentences=sentences)
-    except wikipedia.exceptions.DisambiguationError as e:
-        return wikipedia.summary(e.options[0], sentences=sentences)
+        # Bersihkan nama breed
+        cleaned_breed = breed
+
+        # Hapus awalan "purebred" jika ada
+        if "purebred" in cleaned_breed.lower():
+            cleaned_breed = cleaned_breed.replace("purebred", "").strip()
+
+        # Ganti underscore dengan spasi untuk pencarian Wikipedia
+        cleaned_breed = cleaned_breed.replace("_", " ").strip()
+
+        # Tentukan jenis hewan (Dog/Cat)
+        animal_type = MA.get_mapping(breed)
+
+        # Buat daftar variasi pencarian yang akan dicoba secara berurutan
+        search_variations = [
+            cleaned_breed,                              # Coba nama breed saja
+            f"{cleaned_breed} {animal_type.lower()}",   # Dengan animal type lowercase
+            f"{cleaned_breed} {animal_type}",           # Dengan animal type
+            f"{animal_type.lower()} {cleaned_breed}",   # Animal type dulu (lowercase)
+            f"{animal_type} {cleaned_breed}",           # Animal type dulu
+            f"{cleaned_breed} breed",                   # Dengan kata 'breed'
+            f"{cleaned_breed} pet"                      # Dengan kata 'pet'
+        ]
+
+        # Khusus untuk beberapa ras tertentu yang sering bermasalah
+        special_cases = {
+            "ragdoll": "Ragdoll cat breed",
+            "maine coon": "Maine Coon",
+            "british shorthair": "British Shorthair cat",
+            "russian blue": "Russian Blue cat",
+            "american pit bull terrier": "Pit bull terrier"
+        }
+
+        # Tambahkan kasus khusus jika ada
+        if cleaned_breed.lower() in special_cases:
+            search_variations.insert(0, special_cases[cleaned_breed.lower()])
+
+        # Coba semua variasi pencarian secara berurutan
+        error_messages = []
+        for query in search_variations:
+            try:
+                print(f"Trying Wikipedia search: {query}")
+                return wikipedia.summary(query, sentences=sentences)
+            except wikipedia.exceptions.PageError as e:
+                error_messages.append(f"{query}: {str(e)}")
+                continue
+            except wikipedia.exceptions.DisambiguationError as e:
+                # Jika ada halaman yang ambigu, gunakan opsi pertama
+                try:
+                    return wikipedia.summary(e.options[0], sentences=sentences)
+                except:
+                    error_messages.append(f"{query} -> {e.options[0]}: Disambiguation option failed")
+                    continue
+
+        # Jika semua pencarian gagal, coba ubah bahasa Wikipedia
+        try:
+            wikipedia.set_lang("id")  # Coba dalam bahasa Indonesia
+            for query in search_variations[:3]:  # Coba 3 variasi pertama saja
+                try:
+                    result = wikipedia.summary(query, sentences=sentences)
+                    # Reset bahasa ke English untuk pencarian berikutnya
+                    wikipedia.set_lang("en")
+                    return result
+                except:
+                    continue
+
+            # Reset bahasa ke English untuk pencarian berikutnya
+            wikipedia.set_lang("en")
+        except:
+            pass
+
+        # Jika semua pencarian gagal, buat fallback content
+        return f"""
+        {cleaned_breed} adalah jenis hewan peliharaan dari kelompok {animal_type}.
+        Informasi detailnya tidak ditemukan dalam Wikipedia.
+        Silakan konsultasikan dengan dokter hewan atau peternak berpengalaman untuk
+        informasi lebih lanjut tentang kebutuhan perawatan {cleaned_breed}.
+        """
+
     except Exception as e:
-        return f"Informasi spesifik untuk {breed} tidak ditemukan. {str(e)}"
+        print(f"Error in get_konteks_wiki: {str(e)}")
+        return f"Informasi untuk {breed} tidak tersedia. Silakan cari informasi dari dokter hewan."
 
 # Penyempurnaan pada fungsi get_care_recommendations untuk memastikan format JSON yang konsisten
 def get_care_recommendations(breed, context, max_retries=3):
