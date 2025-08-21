@@ -4,3 +4,10 @@ autopep8
 
 # App
 flask
+tensorflow # Use tensorflow-cpu as an alternative
+Pillow
+numpy
+python-dotenv
+wikipedia
+groq-sdk
+pydantic
