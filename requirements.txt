@@ -1,13 +1,13 @@
 # Dev environment
-pip
-autopep8
+pip>=24.0
+autopep8>=2.0.0
 
 # App
-flask
-tensorflow # Use tensorflow-cpu as an alternative
-Pillow
-numpy
-python-dotenv
-wikipedia
-groq-sdk
-pydantic
+flask>=3.0.0
+tensorflow>=2.15.0  # Use tensorflow-cpu for lighter installation
+Pillow>=10.0.0
+numpy>=1.24.0
+python-dotenv>=1.0.0
+wikipedia>=1.4.0
+groq>=0.4.0  # Fixed: was groq-sdk, correct package is groq
+pydantic>=2.0.0
